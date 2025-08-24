@@ -1,0 +1,123 @@
+{
+  "inventory_system": {
+    "version": "1.21+",
+    "description": "Полная система инвентаря Minecraft для веб-версии",
+    "slot_structure": {
+      "total_slots": 41,
+      "components": {
+        "main_inventory": {
+          "slots": 27,
+          "rows": 3,
+          "columns": 9,
+          "slot_range": "9-35",
+          "description": "Основной инвентарь для хранения предметов"
+        },
+        "hotbar": {
+          "slots": 9,
+          "slot_range": "0-8",
+          "keybindings": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+          "mouse_scroll": true,
+          "description": "Панель быстрого доступа"
+        },
+        "armor_slots": {
+          "slots": 4,
+          "positions": {
+            "helmet": {"slot_id": 103, "slot_name": "armor.head"},
+            "chestplate": {"slot_id": 102, "slot_name": "armor.chest"},
+            "leggings": {"slot_id": 101, "slot_name": "armor.legs"},
+            "boots": {"slot_id": 100, "slot_name": "armor.feet"}
+          },
+          "description": "Слоты для экипировки брони"
+        },
+        "offhand_slot": {
+          "slots": 1,
+          "slot_id": 99,
+          "slot_name": "weapon.offhand",
+          "keybinding": "F",
+          "description": "Слот для второй руки"
+        }
+      }
+    },
+    "stacking_mechanics": {
+      "default_stack_size": 64,
+      "stack_types": {
+        "standard_64": {
+          "max_stack": 64,
+          "items": ["блоки", "большинство_предметов", "еда", "материалы"]
+        },
+        "limited_16": {
+          "max_stack": 16,
+          "items": ["снежки", "яйца", "эндер_жемчуг", "таблички", "пустые_ведра"]
+        },
+        "non_stackable": {
+          "max_stack": 1,
+          "items": ["инструменты", "оружие", "броня", "заполненные_ведра", "зелья"],
+          "reason": "имеют_прочность_или_уникальные_свойства"
+        }
+      }
+    },
+    "inventory_management": {
+      "controls": {
+        "open_inventory": "E",
+        "close_inventory": "ESC",
+        "quick_move": "Shift + Click",
+        "split_stack": "Right Click",
+        "drag_distribute": "Click + Drag",
+        "double_click_collect": "Double Click",
+        "drop_item": "Q",
+        "drop_stack": "Ctrl + Q"
+      },
+      "advanced_features": {
+        "shift_click": {
+          "description": "Быстрое перемещение стака в доступное место",
+          "priority": ["соответствующий_контейнер", "пустой_слот", "частичный_стак"]
+        },
+        "double_click": {
+          "description": "Собирает все предметы того же типа в стак",
+          "limitation": "в пределах доступных слотов"
+        },
+        "drag_split": {
+          "description": "Равномерно распределяет предметы по слотам",
+          "modes": ["left_drag_full", "right_drag_single"]
+        }
+      }
+    },
+    "special_inventories": {
+      "ender_chest": {
+        "slots": 27,
+        "slot_range": "200-226", 
+        "shared": false,
+        "description": "Персональное хранилище, доступное из любого эндер-сундука"
+      },
+      "shulker_box": {
+        "slots": 27,
+        "portable": true,
+        "stackable": false,
+        "description": "Переносной контейнер, сохраняет содержимое при разрушении"
+      }
+    },
+    "interaction_modes": {
+      "survival_creative_differences": {
+        "survival": {
+          "item_loss_on_death": true,
+          "crafting_requirements": true,
+          "item_durability": true
+        },
+        "creative": {
+          "unlimited_items": true,
+          "instant_break": true,
+          "flight_mode": true,
+          "special_inventory": "creative_menu"
+        }
+      }
+    },
+    "tooltips_system": {
+      "basic_info": ["название", "количество", "описание"],
+      "advanced_info": ["id_предмета", "значения_данных", "nbt_теги"],
+      "durability_display": {
+        "visual": "полоска_под_иконкой",
+        "color_coding": ["зеленый", "желтый", "красный", "серый"]
+      }
+    }
+  }
+}
