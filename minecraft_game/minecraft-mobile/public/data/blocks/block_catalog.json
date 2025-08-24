@@ -1,0 +1,329 @@
+{
+  "block_catalog": {
+    "version": "1.21+",
+    "description": "Каталог всех блоков в Minecraft для веб-версии",
+    "destruction_formula": "Время добычи = (Прочность блока * 1.5) / Эффективность инструмента",
+    "categories": {
+      "building_blocks": {
+        "description": "Основные строительные блоки",
+        "blocks": {
+          "dirt": {
+            "id": "dirt",
+            "name": "Земля",
+            "hardness": 0.5,
+            "best_tool": "shovel",
+            "blast_resistance": 0.5,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["dirt"]
+          },
+          "stone": {
+            "id": "stone",
+            "name": "Камень",
+            "hardness": 1.5,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "wooden_pickaxe",
+            "blast_resistance": 6.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": false,
+            "drops": ["cobblestone"]
+          },
+          "cobblestone": {
+            "id": "cobblestone", 
+            "name": "Булыжник",
+            "hardness": 2.0,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "wooden_pickaxe",
+            "blast_resistance": 6.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["cobblestone"]
+          },
+          "wood_planks": {
+            "id": "oak_planks",
+            "name": "Дубовые доски",
+            "hardness": 2.0,
+            "best_tool": "axe",
+            "blast_resistance": 3.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": true,
+            "renewable": true,
+            "drops": ["oak_planks"],
+            "variants": ["oak", "birch", "spruce", "jungle", "acacia", "dark_oak", "mangrove", "cherry"]
+          },
+          "wood_log": {
+            "id": "oak_log",
+            "name": "Дубовое бревно",
+            "hardness": 2.0,
+            "best_tool": "axe",
+            "blast_resistance": 2.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": true,
+            "renewable": true,
+            "drops": ["oak_log"],
+            "variants": ["oak", "birch", "spruce", "jungle", "acacia", "dark_oak", "mangrove", "cherry"]
+          },
+          "glass": {
+            "id": "glass",
+            "name": "Стекло",
+            "hardness": 0.3,
+            "best_tool": "any",
+            "blast_resistance": 0.3,
+            "luminance": 0,
+            "transparent": true,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["nothing"],
+            "silk_touch_drops": ["glass"]
+          }
+        }
+      },
+      "natural_blocks": {
+        "description": "Природные блоки",
+        "blocks": {
+          "grass_block": {
+            "id": "grass_block",
+            "name": "Травяной блок",
+            "hardness": 0.6,
+            "best_tool": "shovel",
+            "blast_resistance": 0.6,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["dirt"],
+            "silk_touch_drops": ["grass_block"]
+          },
+          "sand": {
+            "id": "sand",
+            "name": "Песок",
+            "hardness": 0.5,
+            "best_tool": "shovel",
+            "blast_resistance": 0.5,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["sand"],
+            "physics": "falls"
+          },
+          "gravel": {
+            "id": "gravel",
+            "name": "Гравий",
+            "hardness": 0.6,
+            "best_tool": "shovel",
+            "blast_resistance": 0.6,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["gravel"],
+            "physics": "falls",
+            "rare_drops": ["flint"]
+          }
+        }
+      },
+      "ores": {
+        "description": "Руды и полезные ископаемые",
+        "blocks": {
+          "coal_ore": {
+            "id": "coal_ore",
+            "name": "Угольная руда",
+            "hardness": 3.0,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "wooden_pickaxe",
+            "blast_resistance": 3.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": false,
+            "drops": ["coal"],
+            "silk_touch_drops": ["coal_ore"],
+            "experience": "0-2"
+          },
+          "iron_ore": {
+            "id": "iron_ore",
+            "name": "Железная руда",
+            "hardness": 3.0,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "stone_pickaxe",
+            "blast_resistance": 3.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": false,
+            "drops": ["raw_iron"],
+            "silk_touch_drops": ["iron_ore"]
+          },
+          "diamond_ore": {
+            "id": "diamond_ore",
+            "name": "Алмазная руда",
+            "hardness": 3.0,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "iron_pickaxe",
+            "blast_resistance": 3.0,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": false,
+            "drops": ["diamond"],
+            "silk_touch_drops": ["diamond_ore"],
+            "experience": "3-7"
+          }
+        }
+      },
+      "functional_blocks": {
+        "description": "Функциональные блоки",
+        "blocks": {
+          "crafting_table": {
+            "id": "crafting_table",
+            "name": "Верстак",
+            "hardness": 2.5,
+            "best_tool": "axe",
+            "blast_resistance": 2.5,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": true,
+            "renewable": true,
+            "drops": ["crafting_table"],
+            "function": "crafting_3x3"
+          },
+          "furnace": {
+            "id": "furnace",
+            "name": "Печь",
+            "hardness": 3.5,
+            "best_tool": "pickaxe",
+            "minimum_tool_level": "wooden_pickaxe",
+            "blast_resistance": 3.5,
+            "luminance": 0,
+            "luminance_when_lit": 13,
+            "transparent": false,
+            "solid": true,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["furnace"],
+            "function": "smelting"
+          },
+          "chest": {
+            "id": "chest",
+            "name": "Сундук",
+            "hardness": 2.5,
+            "best_tool": "axe",
+            "blast_resistance": 2.5,
+            "luminance": 0,
+            "transparent": false,
+            "solid": true,
+            "flammable": true,
+            "renewable": true,
+            "drops": ["chest"],
+            "function": "storage_27_slots"
+          }
+        }
+      },
+      "decoration_blocks": {
+        "description": "Декоративные блоки",
+        "blocks": {
+          "torch": {
+            "id": "torch",
+            "name": "Факел",
+            "hardness": 0,
+            "best_tool": "any",
+            "blast_resistance": 0,
+            "luminance": 14,
+            "transparent": true,
+            "solid": false,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["torch"],
+            "placement": "wall_or_ground"
+          },
+          "flower_pot": {
+            "id": "flower_pot",
+            "name": "Цветочный горшок",
+            "hardness": 0,
+            "best_tool": "any",
+            "blast_resistance": 0,
+            "luminance": 0,
+            "transparent": true,
+            "solid": false,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["flower_pot", "contents"],
+            "function": "decoration"
+          }
+        }
+      },
+      "fluid_blocks": {
+        "description": "Жидкости",
+        "blocks": {
+          "water": {
+            "id": "water",
+            "name": "Вода",
+            "hardness": 100,
+            "best_tool": "bucket",
+            "blast_resistance": 100,
+            "luminance": 0,
+            "transparent": true,
+            "solid": false,
+            "flammable": false,
+            "renewable": true,
+            "drops": ["nothing"],
+            "physics": "flows",
+            "levels": "0-15"
+          },
+          "lava": {
+            "id": "lava",
+            "name": "Лава",
+            "hardness": 100,
+            "best_tool": "bucket",
+            "blast_resistance": 100,
+            "luminance": 15,
+            "transparent": true,
+            "solid": false,
+            "flammable": false,
+            "renewable": false,
+            "drops": ["nothing"],
+            "physics": "flows_slowly",
+            "levels": "0-15",
+            "damage": "fire"
+          }
+        }
+      }
+    },
+    "block_properties": {
+      "hardness_scale": "0 (мгновенное разрушение) до 50+ (очень прочные)",
+      "blast_resistance_scale": "0 (не устойчив к взрывам) до 3600000 (неразрушимый)",
+      "luminance_scale": "0 (не светится) до 15 (максимальный свет)",
+      "tool_efficiency": {
+        "hand": 1.0,
+        "wooden_tools": 2.0,
+        "stone_tools": 4.0,
+        "iron_tools": 6.0,
+        "diamond_tools": 8.0,
+        "netherite_tools": 9.0,
+        "golden_tools": 12.0
+      }
+    }
+  }
+}
