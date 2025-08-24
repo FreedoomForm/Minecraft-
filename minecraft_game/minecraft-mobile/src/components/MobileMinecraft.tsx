@@ -1,27 +1,10 @@
-// Мобильный Minecraft с базовым интерфейсом
-import React, { useState, useEffect, Suspense } from 'react';
+// Мобильный Minecraft с упрощенным интерфейсом
+import React, { useState, useEffect } from 'react';
 import { MobileHUD } from '@/components/MobileHUD';
 import { MobileInventory } from '@/components/MobileInventory';
 import { MobileControls } from '@/components/MobileControls';
 import { MinecraftEngine } from '@/components/MinecraftEngine';
-import { gameData } from '@/lib/gameData';
-import { WorldGenerator } from '@/lib/worldGenerator';
 import type { GameState, TouchControls, InventorySlot } from '@/types/game';
-
-// Компонент загрузки для игры
-function GameLoadingFallback() {
-  return (
-    <div className="w-full h-screen bg-gradient-to-b from-blue-400 to-green-400 flex items-center justify-center">
-      <div className="text-center text-white">
-        <div className="text-4xl font-bold mb-4">🎮 Minecraft Mobile</div>
-        <div className="text-xl mb-8">Загрузка игры...</div>
-        <div className="w-64 h-2 bg-gray-700 rounded-full mx-auto">
-          <div className="h-full bg-green-500 rounded-full animate-pulse" style={{ width: '70%' }} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // Начальное состояние игры
 const createInitialGameState = (): GameState => {
@@ -78,7 +61,6 @@ export function MobileMinecraft() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [gameTime, setGameTime] = useState(0);
-  const [worldGenerator] = useState(() => new WorldGenerator(123456)); // Фиксированный сид для стабильности
 
   // Инициализация игры
   useEffect(() => {
@@ -86,9 +68,6 @@ export function MobileMinecraft() {
       try {
         setIsLoading(true);
         setError(null);
-        
-        // Загружаем данные игры
-        await gameData.loadGameData();
         
         // Инициализируем состояние игры
         const initialState = createInitialGameState();
@@ -225,7 +204,17 @@ export function MobileMinecraft() {
   }, []);
 
   if (isLoading) {
-    return <GameLoadingFallback />;
+    return (
+      <div className="w-full h-screen bg-gradient-to-b from-blue-400 to-green-400 flex items-center justify-center">
+        <div className="text-center text-white">
+          <div className="text-4xl font-bold mb-4">🎮 Minecraft Mobile</div>
+          <div className="text-xl mb-8">Загрузка игры...</div>
+          <div className="w-64 h-2 bg-gray-700 rounded-full mx-auto">
+            <div className="h-full bg-green-500 rounded-full animate-pulse" style={{ width: '70%' }} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error || !gameState) {
@@ -258,17 +247,13 @@ export function MobileMinecraft() {
   return (
     <div className={`w-full h-screen overflow-hidden relative bg-gradient-to-b ${getBackgroundGradient(gameState.time)}`}>
       {/* 3D мир игры */}
-      <Suspense fallback={<GameLoadingFallback />}>
-        <MinecraftEngine
-          playerState={gameState.player}
-          controls={controls}
-          chunks={gameState.chunks}
-          onPlayerUpdate={handlePlayerUpdate}
-          onBlockBreak={handleBlockBreak}
-          onBlockPlace={handleBlockPlace}
-          worldGenerator={worldGenerator}
-        />
-      </Suspense>
+      <MinecraftEngine
+        playerState={gameState.player}
+        controls={controls}
+        onPlayerUpdate={handlePlayerUpdate}
+        onBlockBreak={handleBlockBreak}
+        onBlockPlace={handleBlockPlace}
+      />
       
       {/* Мобильные контроллы */}
       <MobileControls 
