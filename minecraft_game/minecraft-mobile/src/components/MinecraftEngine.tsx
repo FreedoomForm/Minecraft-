@@ -256,7 +256,7 @@ export function MinecraftEngine({
   };
 
   // Обработка ошибок Three.js
-  const handleError = useCallback((error: Error) => {
+  const handleError = useCallback((error: any) => {
     console.error('Ошибка Three.js:', error);
     setIsError(true);
   }, []);
@@ -298,7 +298,6 @@ export function MinecraftEngine({
         dpr={[1, 1]} // Фиксированный DPR для стабильности
         frameloop="always" // Всегда рендерим для стабильности
         shadows={false} // Отключаем тени для производительности
-        onError={handleError}
       >
         <Suspense fallback={null}>
           <CameraController 

@@ -11,9 +11,11 @@ const checkWebGLSupport = () => {
       throw new Error('WebGL не поддерживается');
     }
     
-    // Проверка расширений
-    const extensions = gl.getSupportedExtensions();
-    console.log('Поддерживаемые WebGL расширения:', extensions);
+    // Проверка расширений (только для WebGL контекста)
+    if ('getSupportedExtensions' in gl) {
+      const extensions = (gl as WebGLRenderingContext).getSupportedExtensions();
+      console.log('Поддерживаемые WebGL расширения:', extensions);
+    }
     
     return true;
   } catch (error) {
