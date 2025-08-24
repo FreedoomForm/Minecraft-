@@ -193,6 +193,11 @@ export class WorldGenerator {
     return this.idToBlockName.get(id);
   }
 
+  // Публичный метод для получения ID блока по имени
+  getBlockIdByName(blockName: string): number | undefined {
+    return this.getBlockId(blockName);
+  }
+
   getChunkKey(x: number, z: number): string {
     return `${x},${z}`;
   }

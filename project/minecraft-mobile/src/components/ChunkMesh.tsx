@@ -6,6 +6,7 @@ import { WorldGenerator } from '@/lib/worldGenerator';
 interface ChunkMeshProps {
   chunk: WorldChunk;
   worldGenerator: WorldGenerator;
+  onBlockClick?: (worldX: number, worldY: number, worldZ: number) => void;
 }
 
 // Простое сопоставление имени блока с цветом
@@ -37,7 +38,7 @@ function getBlockIndex(x: number, y: number, z: number): number {
   return y * 256 + z * 16 + x;
 }
 
-export function ChunkMesh({ chunk, worldGenerator }: ChunkMeshProps) {
+export function ChunkMesh({ chunk, worldGenerator, onBlockClick }: ChunkMeshProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
 
   const { matrices, colors, count } = useMemo(() => {
@@ -108,8 +109,19 @@ export function ChunkMesh({ chunk, worldGenerator }: ChunkMeshProps) {
 
   if (count === 0) return null;
 
+  const handlePointerDown = (e: any) => {
+    if (!onBlockClick) return;
+    const instanceId: number | null = e?.instanceId ?? null;
+    if (instanceId == null || !meshRef.current) return;
+    const matrix = new THREE.Matrix4();
+    meshRef.current.getMatrixAt(instanceId, matrix);
+    const pos = new THREE.Vector3();
+    pos.setFromMatrixPosition(matrix);
+    onBlockClick(Math.floor(pos.x), Math.floor(pos.y), Math.floor(pos.z));
+  };
+
   return (
-    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, count]} castShadow={false} receiveShadow={false}>
+    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, count]} castShadow={false} receiveShadow={false} onPointerDown={handlePointerDown}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial vertexColors />
     </instancedMesh>

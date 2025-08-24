@@ -216,7 +216,7 @@ export function MinecraftEngine({
     // Более простая логика перемещения
     const newPosition: [number, number, number] = [
       playerState.position[0] + controls.moveStick.x * moveDistance,
-      playerState.position[1] + (controls.jumpPressed ? 0.1 : controls.crouchPressed ? -0.05 : 0),
+      Math.max(1, playerState.position[1] + (controls.jumpPressed ? 2.5 * delta : controls.crouchPressed ? -1.5 * delta : 0)),
       playerState.position[2] + controls.moveStick.y * moveDistance
     ];
     
@@ -228,12 +228,15 @@ export function MinecraftEngine({
 
   // Обработка движения в useFrame
   useFrame((_, delta) => {
-    handleMovement(delta);
+    handleMovement(Math.min(delta, 0.05));
   });
 
   const handleBlockClick = (x: number, y: number, z: number) => {
     if (controls.actionPressed) {
       onBlockBreak(x, y, z);
+    } else {
+      // По умолчанию ставим блок сверху кликнутого
+      onBlockPlace(x, y + 1, z);
     }
   };
 
@@ -258,6 +261,10 @@ export function MinecraftEngine({
         frameloop="always" // Всегда рендерим для стабильности
         shadows={false} // Отключаем тени для производительности
       >
+        {/* Фон и туман для более приятного вида */}
+        <color attach="background" args={["#87CEEB"]} />
+        {/* @ts-ignore: R3F fog attach typing */}
+        <fog attach="fog" args={["#87CEEB", 25, 180]} />
         <CameraController 
           controls={controls}
           playerPosition={playerState.position}
@@ -274,7 +281,12 @@ export function MinecraftEngine({
         
         {/* Рендер чанков, если они переданы */}
         {Array.from(chunks.values()).map((chunk: WorldChunk) => (
-          <ChunkMesh key={`chunk-${chunk.x},${chunk.z}`} chunk={chunk} worldGenerator={worldGenerator} />
+          <ChunkMesh 
+            key={`chunk-${chunk.x},${chunk.z}`} 
+            chunk={chunk} 
+            worldGenerator={worldGenerator}
+            onBlockClick={(wx, wy, wz) => handleBlockClick(wx, wy, wz)}
+          />
         ))}
         {/* Фоллбек: демо-мир, если чанков нет */}
         {(chunks.size === 0) && (

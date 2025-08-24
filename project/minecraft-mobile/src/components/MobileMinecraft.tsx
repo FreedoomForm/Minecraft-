@@ -179,6 +179,88 @@ export function MobileMinecraft() {
     });
   }, [gameState?.player.position[0], gameState?.player.position[2], worldGenerator]);
 
+  // Вспомогательные функции для работы с блоками
+  const getBlockIndex = (x: number, y: number, z: number) => y * 256 + z * 16 + x;
+  const worldToChunkCoord = (v: number) => {
+    const f = Math.floor(v);
+    return {
+      chunk: Math.floor(f / 16),
+      local: ((f % 16) + 16) % 16
+    };
+  };
+
+  // Обработка разрушения блока
+  const handleBlockBreak = (wx: number, wy: number, wz: number) => {
+    setGameState(prev => {
+      if (!prev) return prev;
+      const cx = worldToChunkCoord(wx).chunk;
+      const cz = worldToChunkCoord(wz).chunk;
+      const lx = worldToChunkCoord(wx).local;
+      const lz = worldToChunkCoord(wz).local;
+      const ly = Math.max(0, Math.min(63, wy));
+      const key = worldGenerator.getChunkKey(cx, cz);
+      const chunk = prev.chunks.get(key);
+      if (!chunk) return prev;
+
+      const idx = getBlockIndex(lx, ly, lz);
+      const blockId = chunk.blocks[idx];
+      if (blockId === 0) return prev;
+
+      const newBlocks = new Uint16Array(chunk.blocks);
+      newBlocks[idx] = 0; // воздух
+      const newChunk = { ...chunk, blocks: newBlocks };
+
+      const newChunks = new Map(prev.chunks);
+      newChunks.set(key, newChunk);
+
+      // Добавляем дроп в инвентарь (упрощенно: имя по id, count=1)
+      const blockName = worldGenerator.getBlockNameById(blockId) || 'stone';
+      const newInventory = [...prev.inventory];
+      const spot = newInventory.findIndex(s => !s.itemId || (s.itemId === blockName && s.count < 64));
+      if (spot !== -1) {
+        if (!newInventory[spot].itemId) newInventory[spot] = { itemId: blockName, count: 1 };
+        else newInventory[spot].count += 1;
+      }
+
+      return { ...prev, chunks: newChunks, inventory: newInventory };
+    });
+  };
+
+  // Обработка установки блока (используем выбранный слот хотбара)
+  const handleBlockPlace = (wx: number, wy: number, wz: number) => {
+    setGameState(prev => {
+      if (!prev) return prev;
+      const selected = prev.hotbar[prev.selectedSlot];
+      if (!selected?.itemId || selected.count <= 0) return prev;
+
+      const cx = worldToChunkCoord(wx).chunk;
+      const cz = worldToChunkCoord(wz).chunk;
+      const lx = worldToChunkCoord(wx).local;
+      const lz = worldToChunkCoord(wz).local;
+      const ly = Math.max(0, Math.min(63, wy));
+      const key = worldGenerator.getChunkKey(cx, cz);
+      const chunk = prev.chunks.get(key);
+      if (!chunk) return prev;
+
+      const idx = getBlockIndex(lx, ly, lz);
+      if (chunk.blocks[idx] !== 0) return prev; // занято
+
+      const placeId = worldGenerator.getBlockIdByName(selected.itemId) || worldGenerator.getBlockIdByName('stone') || 1;
+      const newBlocks = new Uint16Array(chunk.blocks);
+      newBlocks[idx] = placeId;
+      const newChunk = { ...chunk, blocks: newBlocks };
+
+      const newChunks = new Map(prev.chunks);
+      newChunks.set(key, newChunk);
+
+      const newHotbar = [...prev.hotbar];
+      newHotbar[prev.selectedSlot] = { ...selected, count: selected.count - 1 };
+      if (newHotbar[prev.selectedSlot].count <= 0) newHotbar[prev.selectedSlot] = { itemId: null, count: 0 };
+
+      return { ...prev, chunks: newChunks, hotbar: newHotbar };
+    });
+  };
+
   // Обработка контроллеров
   const handleControlsChange = (newControls: TouchControls) => {
     setControls(newControls);
@@ -216,18 +298,6 @@ export function MobileMinecraft() {
       if (!prev) return prev;
       return { ...prev, hotbar: newHotbar };
     });
-  };
-
-  // Обработка разрушения блока
-  const handleBlockBreak = (x: number, y: number, z: number) => {
-    console.log(`Разрушен блок на позиции [${x}, ${y}, ${z}]`);
-    // Реализация удаления блока из чанка
-  };
-
-  // Обработка установки блока
-  const handleBlockPlace = (x: number, y: number, z: number) => {
-    console.log(`Установлен блок на позиции [${x}, ${y}, ${z}]`);
-    // Реализация добавления блока в чанк
   };
 
   // Предотвращение скроллинга на мобильных устройствах

@@ -1,50 +1,23 @@
-# React + TypeScript + Vite
+# Minecraft Mobile (Three.js + React + R3F)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Запуск
 
-Currently, two official plugins are available:
+- Dev: `pnpm dev` и откройте указанный URL
+- Prod build: `pnpm build` затем `pnpm preview`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Примечание: Service Worker регистрируется только в продакшене.
 
-## Expanding the ESLint configuration
+## Управление (мобильно)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Левый джойстик: движение
+- Кнопка ↑: прыжок
+- Кнопка ↓: присесть
+- Кнопка ⚙️ зажать и тап по блоку: ломать блок
+- Тап по блоку без зажатой кнопки ⚙️: поставить блок из выбранного слота хотбара (если есть)
 
-- Configure the top-level `parserOptions` property like this:
+## Особенности
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Генерация чанков 16×16×64 вокруг игрока
+- Инстанс-рендеринг кубов с цветами по типу блока
+- Базовый крафт/инвентарь (UI)
+- Автосохранение базового состояния
