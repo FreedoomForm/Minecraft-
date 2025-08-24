@@ -1,0 +1,97 @@
+{
+  "crafting_system": {
+    "version": "1.21+",
+    "description": "Система крафтинга в Minecraft для веб-версии",
+    "crafting_grids": {
+      "2x2_grid": {
+        "size": "2x2",
+        "total_slots": 4,
+        "location": "Инвентарь игрока",
+        "description": "Используется для создания простых рецептов: деревянные доски, палки, верстаки, факелы",
+        "available_recipes": ["основные_блоки", "простые_инструменты", "базовые_предметы"]
+      },
+      "3x3_grid": {
+        "size": "3x3",
+        "total_slots": 9,
+        "location": "Верстак",
+        "description": "Позволяет создавать все рецепты в игре, включая сложные предметы и блоки",
+        "available_recipes": ["все_рецепты"]
+      }
+    },
+    "crafting_stations": {
+      "inventory": {
+        "id": "player_inventory",
+        "name": "Инвентарь",
+        "grid_size": "2x2",
+        "accessibility": "всегда_доступен",
+        "special_features": []
+      },
+      "crafting_table": {
+        "id": "crafting_table",
+        "name": "Верстак",
+        "grid_size": "3x3",
+        "accessibility": "требует_размещения",
+        "craft_recipe": {
+          "pattern": ["WW", "WW"],
+          "ingredients": {"W": "planks"}
+        },
+        "special_features": ["расширенные_рецепты"]
+      },
+      "crafter": {
+        "id": "crafter_block",
+        "name": "Крафтер",
+        "grid_size": "3x3", 
+        "accessibility": "автоматизированный",
+        "version_added": "1.21",
+        "requirements": ["redstone_signal"],
+        "special_features": ["автоматизация", "работа_с_воронками", "все_рецепты_верстака"]
+      }
+    },
+    "recipe_types": {
+      "shaped": {
+        "name": "Формованные рецепты",
+        "description": "Требуют определенного расположения ингредиентов в сетке",
+        "features": ["точная_позиция", "возможность_зеркалирования", "возможность_смещения"],
+        "examples": ["хлеб", "лук", "мечи", "кирки"]
+      },
+      "shapeless": {
+        "name": "Бесформенные рецепты",
+        "description": "Ингредиенты можно размещать в любом порядке",
+        "features": ["произвольная_позиция"],
+        "examples": ["сброженное_паучье_око", "огненный_заряд"]
+      },
+      "fixed": {
+        "name": "Фиксированные рецепты", 
+        "description": "Не могут быть перемещены или отзеркалены",
+        "availability": "только_в_bedrock_edition_или_датапаках",
+        "examples": ["красители_для_знамен"]
+      }
+    },
+    "automation": {
+      "crafter_mechanics": {
+        "activation": "redstone_signal",
+        "input_method": "hoppers",
+        "output_method": "hoppers",
+        "crafting_speed": "1_item_per_redstone_pulse",
+        "capabilities": "все_рецепты_верстака"
+      },
+      "hopper_integration": {
+        "input_slots": "любой_доступный",
+        "output_extraction": "результат_крафта",
+        "smart_distribution": false
+      }
+    },
+    "recipe_book": {
+      "categories": {
+        "java_edition": ["все", "инструменты_оружие_броня", "строительные_материалы", "еда_разное", "редстоун"],
+        "bedrock_edition": ["все", "строительство", "оборудование", "предметы", "природа"]
+      },
+      "unlock_conditions": {
+        "auto_unlock": "при_использовании_рецепта",
+        "command_unlock": "/recipe",
+        "achievement_unlock": "через_достижения"
+      },
+      "features": ["каталог_рецептов", "автоматическое_размещение", "группировка_по_категориям"]
+    }
+  }
+}

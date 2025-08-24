@@ -1,0 +1,228 @@
+{
+  "game_mechanics": {
+    "version": "1.21+",
+    "description": "Основные игровые механики Minecraft для веб-версии",
+    "movement_physics": {
+      "walking_speed": 4.317,
+      "running_speed": 5.612,
+      "crouching_speed": 1.295,
+      "jumping": {
+        "height": 1.25,
+        "distance": 4,
+        "with_running": 6
+      },
+      "swimming": {
+        "speed": 2.2,
+        "diving_speed": 2.0,
+        "breath_capacity": 300,
+        "damage_after_drowning": 2
+      },
+      "climbing": {
+        "ladder_speed": 2.35,
+        "vine_speed": 2.0
+      },
+      "gravity": {
+        "acceleration": 32,
+        "terminal_velocity": 78.4,
+        "fall_damage_threshold": 3
+      }
+    },
+    "collision_system": {
+      "player_hitbox": {
+        "width": 0.6,
+        "height": 1.8,
+        "eye_level": 1.62
+      },
+      "block_collision": {
+        "full_blocks": "complete_collision",
+        "partial_blocks": "partial_collision",
+        "non_solid": "no_collision"
+      },
+      "entity_collision": {
+        "push_multiplier": 0.8,
+        "knockback_resistance": "зависит_от_существа"
+      }
+    },
+    "health_system": {
+      "max_health": 20,
+      "health_points_per_heart": 2,
+      "natural_regeneration": {
+        "condition": "hunger_18_or_higher",
+        "rate": "1_point_per_4_seconds",
+        "cost": "1_hunger_point_per_6_health"
+      },
+      "damage_sources": {
+        "fall_damage": {
+          "threshold": 3,
+          "calculation": "fall_distance_minus_3"
+        },
+        "drowning": {
+          "damage": 2,
+          "interval": 1000
+        },
+        "fire": {
+          "damage": 1,
+          "interval": 1000,
+          "duration": 8000
+        },
+        "lava": {
+          "damage": 4,
+          "interval": 500,
+          "fire_duration": 15000
+        }
+      },
+      "armor_mechanics": {
+        "armor_points": {
+          "max": 20,
+          "display": "armor_bar"
+        },
+        "damage_reduction": "зависит_от_типа_урона",
+        "durability_loss": "1_per_4_damage_taken"
+      }
+    },
+    "hunger_system": {
+      "max_hunger": 20,
+      "hunger_points_per_drumstick": 2,
+      "saturation": {
+        "max": "current_hunger_level",
+        "hidden_stat": true,
+        "affects_hunger_depletion": true
+      },
+      "hunger_depletion": {
+        "peaceful": 0,
+        "easy": "slower_rate",
+        "normal": "standard_rate", 
+        "hard": "faster_rate"
+      },
+      "effects_of_hunger": {
+        "hunger_18_plus": "health_regeneration",
+        "hunger_6_or_less": "no_sprinting",
+        "hunger_0": "health_loss_to_10_in_easy_normal_1_in_hard"
+      },
+      "food_mechanics": {
+        "eating_time": 1600,
+        "stack_size": 64,
+        "spoilage": false
+      }
+    },
+    "game_modes": {
+      "survival": {
+        "description": "Основной режим игры с полным набором механик",
+        "features": [
+          "resource_gathering",
+          "health_hunger_systems", 
+          "inventory_management",
+          "crafting_system",
+          "death_penalty"
+        ],
+        "limitations": ["limited_resources", "tool_durability", "environmental_dangers"]
+      },
+      "creative": {
+        "description": "Режим для строительства и экспериментов",
+        "features": [
+          "unlimited_resources",
+          "flight_ability",
+          "instant_block_breaking",
+          "no_damage",
+          "special_inventory"
+        ],
+        "limitations": []
+      },
+      "adventure": {
+        "description": "Режим для прохождения карт",
+        "features": [
+          "survival_mechanics",
+          "limited_block_interaction",
+          "command_block_support"
+        ],
+        "limitations": ["restricted_building", "tool_requirements"]
+      },
+      "spectator": {
+        "description": "Режим наблюдения",
+        "features": [
+          "noclip_movement",
+          "invisible_to_mobs",
+          "view_through_entities",
+          "ui_access"
+        ],
+        "limitations": ["no_interaction", "no_inventory"]
+      }
+    },
+    "block_interaction": {
+      "breaking_blocks": {
+        "formula": "time = (hardness * 1.5) / tool_efficiency",
+        "factors": ["block_hardness", "tool_type", "enchantments", "status_effects"],
+        "instant_break": ["creative_mode", "debug_stick"]
+      },
+      "placing_blocks": {
+        "requirements": ["valid_position", "sufficient_support", "no_collision"],
+        "restrictions": ["distance_limit", "line_of_sight"]
+      },
+      "interaction_range": {
+        "survival": 4.5,
+        "creative": 5.0,
+        "through_blocks": false
+      }
+    },
+    "crafting_mechanics": {
+      "crafting_grid_access": {
+        "2x2": "always_available",
+        "3x3": "requires_crafting_table"
+      },
+      "recipe_discovery": {
+        "automatic": "when_ingredients_available",
+        "manual": "recipe_book_unlock",
+        "advancement": "achievement_rewards"
+      },
+      "crafting_time": "instant"
+    },
+    "world_mechanics": {
+      "time_system": {
+        "day_length": 20000,
+        "daylight_cycle": {
+          "sunrise": 6000,
+          "noon": 12000,
+          "sunset": 18000,
+          "midnight": 0
+        },
+        "light_levels": "0_to_15",
+        "mob_spawning": "light_level_dependent"
+      },
+      "weather_system": {
+        "rain": {
+          "fills_cauldrons": true,
+          "extinguishes_fire": true,
+          "affects_mob_spawning": true
+        },
+        "thunderstorm": {
+          "lightning_strikes": true,
+          "mob_conversions": true,
+          "fire_starting": true
+        }
+      },
+      "chunk_loading": {
+        "simulation_distance": "adjustable",
+        "render_distance": "adjustable", 
+        "chunk_size": "16x16x384"
+      }
+    },
+    "experience_system": {
+      "sources": ["mining_ores", "killing_mobs", "smelting", "fishing", "trading"],
+      "uses": ["enchanting", "anvil_operations", "mending"],
+      "level_calculation": "exponential_curve",
+      "death_penalty": "lose_portion_of_xp"
+    },
+    "enchanting_system": {
+      "enchanting_table": {
+        "max_level": 30,
+        "bookshelf_requirement": 15,
+        "lapis_cost": "1_to_3"
+      },
+      "anvil_operations": {
+        "combining_items": true,
+        "renaming": true,
+        "repair_cost": "exponential_increase"
+      }
+    }
+  }
+}

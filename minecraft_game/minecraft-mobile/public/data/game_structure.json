@@ -1,0 +1,340 @@
+{
+  "gameData": {
+    "metadata": {
+      "version": "1.0.0",
+      "createdDate": "2025-08-25T00:13:09.000Z",
+      "lastModified": "2025-08-25T00:13:09.000Z",
+      "gameId": "unique-game-id-here",
+      "description": "Основная структура данных игры"
+    },
+    
+    "player": {
+      "position": {
+        "description": "Текущая позиция игрока в трёхмерном пространстве",
+        "x": 0,
+        "y": 64,
+        "z": 0,
+        "chunkX": 0,
+        "chunkZ": 0,
+        "rotation": {
+          "yaw": 0,
+          "pitch": 0
+        }
+      },
+      
+      "stats": {
+        "description": "Основные характеристики игрока",
+        "health": 20,
+        "maxHealth": 20,
+        "hunger": 20,
+        "maxHunger": 20,
+        "experience": 0,
+        "level": 0,
+        "oxygen": 300,
+        "maxOxygen": 300
+      },
+      
+      "inventory": {
+        "description": "Инвентарь игрока - основные слоты и быстрая панель",
+        "mainSlots": {
+          "description": "Основные 27 слотов инвентаря (3x9)",
+          "slots": [
+            {
+              "slot": 0,
+              "item": null,
+              "count": 0,
+              "durability": null,
+              "enchantments": []
+            }
+          ]
+        },
+        "hotbar": {
+          "description": "Быстрая панель - 9 слотов",
+          "selectedSlot": 0,
+          "slots": [
+            {
+              "slot": 0,
+              "item": null,
+              "count": 0,
+              "durability": null,
+              "enchantments": []
+            }
+          ]
+        },
+        "armor": {
+          "description": "Слоты для брони",
+          "helmet": null,
+          "chestplate": null,
+          "leggings": null,
+          "boots": null
+        },
+        "offHand": {
+          "description": "Дополнительная рука",
+          "item": null,
+          "count": 0
+        }
+      },
+      
+      "gameMode": {
+        "description": "Режим игры игрока",
+        "mode": "survival",
+        "allowedModes": ["survival", "creative", "adventure", "spectator"]
+      }
+    },
+    
+    "world": {
+      "description": "Информация о мире игры",
+      "worldName": "MyWorld",
+      "seed": 12345678901234567890,
+      "worldType": "default",
+      "spawnPoint": {
+        "x": 0,
+        "y": 64,
+        "z": 0
+      },
+      
+      "chunks": {
+        "description": "Загруженные чанки мира (16x16 блоков каждый)",
+        "loadedChunks": {
+          "0,0": {
+            "chunkX": 0,
+            "chunkZ": 0,
+            "lastAccessed": "2025-08-25T00:13:09.000Z",
+            "blocks": {
+              "description": "Блоки в чанке, сжатые данные",
+              "format": "compressed",
+              "data": "base64-encoded-chunk-data"
+            },
+            "entities": {
+              "description": "Сущности в данном чанке",
+              "mobs": [],
+              "items": [],
+              "blocks": []
+            }
+          }
+        }
+      },
+      
+      "entities": {
+        "description": "Глобальные сущности мира",
+        "mobs": [
+          {
+            "id": "unique-entity-id",
+            "type": "zombie",
+            "position": {"x": 10, "y": 64, "z": 10},
+            "health": 20,
+            "maxHealth": 20,
+            "velocity": {"x": 0, "y": 0, "z": 0},
+            "rotation": {"yaw": 0, "pitch": 0},
+            "ai": {
+              "target": null,
+              "state": "idle"
+            }
+          }
+        ],
+        "items": [
+          {
+            "id": "unique-item-id",
+            "type": "dirt",
+            "position": {"x": 5, "y": 64, "z": 5},
+            "count": 64,
+            "despawnTimer": 6000
+          }
+        ],
+        "projectiles": [
+          {
+            "id": "unique-projectile-id",
+            "type": "arrow",
+            "position": {"x": 0, "y": 65, "z": 0},
+            "velocity": {"x": 1, "y": 0.5, "z": 0},
+            "owner": "player-id"
+          }
+        ]
+      },
+      
+      "weather": {
+        "description": "Состояние погоды в мире",
+        "isRaining": false,
+        "isThundering": false,
+        "rainLevel": 0.0,
+        "thunderLevel": 0.0,
+        "clearWeatherTime": 0,
+        "rainTime": 0,
+        "thunderTime": 0
+      },
+      
+      "time": {
+        "description": "Игровое время",
+        "dayTime": 6000,
+        "totalTime": 24000,
+        "doDaylightCycle": true
+      }
+    },
+    
+    "settings": {
+      "description": "Настройки игры",
+      "difficulty": {
+        "level": "normal",
+        "availableLevels": ["peaceful", "easy", "normal", "hard"]
+      },
+      
+      "gameRules": {
+        "description": "Правила игры",
+        "doDaylightCycle": true,
+        "doMobSpawning": true,
+        "doMobLoot": true,
+        "keepInventory": false,
+        "mobGriefing": true,
+        "doFireTick": true
+      },
+      
+      "rendering": {
+        "description": "Настройки рендеринга",
+        "renderDistance": 8,
+        "maxRenderDistance": 32,
+        "fov": 70,
+        "brightness": 0.5,
+        "clouds": true,
+        "particles": "all"
+      },
+      
+      "performance": {
+        "description": "Настройки производительности",
+        "maxFrameRate": 60,
+        "vsync": true,
+        "multicore": true,
+        "memoryUsage": "normal"
+      }
+    }
+  },
+  
+  "saveData": {
+    "description": "Структура для сохранения/загрузки прогресса игры",
+    "saveSlots": [
+      {
+        "slotId": 1,
+        "worldName": "MyWorld",
+        "lastPlayed": "2025-08-25T00:13:09.000Z",
+        "playtime": 3600,
+        "gameMode": "survival",
+        "difficulty": "normal",
+        "playerLevel": 5,
+        "screenshot": "base64-encoded-screenshot",
+        "isCorrupted": false,
+        "gameData": {
+          "description": "Ссылка на полные данные игры",
+          "dataFile": "saves/world1/game_data.json"
+        }
+      }
+    ],
+    
+    "autosave": {
+      "description": "Настройки автосохранения",
+      "enabled": true,
+      "interval": 300,
+      "maxBackups": 10,
+      "compressionEnabled": true
+    },
+    
+    "backup": {
+      "description": "Система резервного копирования",
+      "enabled": true,
+      "maxBackups": 5,
+      "backupInterval": 1800,
+      "backupLocation": "backups/"
+    }
+  },
+  
+  "itemRegistry": {
+    "description": "Реестр всех предметов и блоков в игре",
+    "blocks": {
+      "dirt": {
+        "id": 1,
+        "name": "Dirt",
+        "displayName": "Грязь",
+        "stackSize": 64,
+        "isBlock": true,
+        "hardness": 0.5,
+        "resistance": 2.5,
+        "tool": "shovel",
+        "drops": ["dirt"]
+      },
+      "stone": {
+        "id": 2,
+        "name": "Stone",
+        "displayName": "Камень",
+        "stackSize": 64,
+        "isBlock": true,
+        "hardness": 1.5,
+        "resistance": 30,
+        "tool": "pickaxe",
+        "drops": ["cobblestone"]
+      }
+    },
+    
+    "items": {
+      "wooden_sword": {
+        "id": 1001,
+        "name": "Wooden Sword",
+        "displayName": "Деревянный меч",
+        "stackSize": 1,
+        "isBlock": false,
+        "durability": 59,
+        "damage": 4,
+        "attackSpeed": 1.6,
+        "tool": "sword"
+      }
+    }
+  },
+  
+  "recipes": {
+    "description": "Рецепты крафта",
+    "crafting": {
+      "wooden_sword": {
+        "type": "shaped",
+        "pattern": [
+          " W ",
+          " W ",
+          " S "
+        ],
+        "ingredients": {
+          "W": "wooden_planks",
+          "S": "stick"
+        },
+        "result": {
+          "item": "wooden_sword",
+          "count": 1
+        }
+      }
+    },
+    
+    "smelting": {
+      "iron_ingot": {
+        "ingredient": "iron_ore",
+        "result": "iron_ingot",
+        "experience": 0.7,
+        "cookingTime": 200
+      }
+    }
+  },
+  
+  "dataValidation": {
+    "description": "Схемы валидации для проверки целостности данных",
+    "playerSchema": {
+      "required": ["position", "stats", "inventory", "gameMode"],
+      "position": {
+        "required": ["x", "y", "z", "chunkX", "chunkZ", "rotation"]
+      },
+      "stats": {
+        "required": ["health", "maxHealth", "hunger", "maxHunger", "experience", "level"]
+      }
+    },
+    
+    "worldSchema": {
+      "required": ["worldName", "seed", "spawnPoint", "chunks", "entities", "weather", "time"],
+      "chunks": {
+        "required": ["loadedChunks"]
+      }
+    }
+  }
+}

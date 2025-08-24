@@ -1,0 +1,203 @@
+{
+  "item_catalog": {
+    "version": "1.21+",
+    "description": "Каталог всех предметов, инструментов и оружия в Minecraft",
+    "categories": {
+      "tools": {
+        "description": "Инструменты для добычи и обработки ресурсов",
+        "items": {
+          "pickaxe": {
+            "name": "Кирка",
+            "function": "добыча_камня_и_руды",
+            "materials": {
+              "wooden": {"durability": 59, "efficiency": 2.0, "mining_level": 0},
+              "stone": {"durability": 131, "efficiency": 4.0, "mining_level": 1},
+              "iron": {"durability": 250, "efficiency": 6.0, "mining_level": 2},
+              "diamond": {"durability": 1561, "efficiency": 8.0, "mining_level": 3},
+              "netherite": {"durability": 2031, "efficiency": 9.0, "mining_level": 4},
+              "golden": {"durability": 32, "efficiency": 12.0, "mining_level": 0}
+            },
+            "enchantments": ["efficiency", "unbreaking", "mending", "fortune", "silk_touch"]
+          },
+          "axe": {
+            "name": "Топор",
+            "function": "добыча_дерева",
+            "materials": {
+              "wooden": {"durability": 59, "efficiency": 2.0},
+              "stone": {"durability": 131, "efficiency": 4.0},
+              "iron": {"durability": 250, "efficiency": 6.0},
+              "diamond": {"durability": 1561, "efficiency": 8.0},
+              "netherite": {"durability": 2031, "efficiency": 9.0},
+              "golden": {"durability": 32, "efficiency": 12.0}
+            },
+            "enchantments": ["efficiency", "unbreaking", "mending", "fortune", "silk_touch"]
+          },
+          "shovel": {
+            "name": "Лопата",
+            "function": "добыча_земли_и_песка",
+            "materials": {
+              "wooden": {"durability": 59, "efficiency": 2.0},
+              "stone": {"durability": 131, "efficiency": 4.0},
+              "iron": {"durability": 250, "efficiency": 6.0},
+              "diamond": {"durability": 1561, "efficiency": 8.0},
+              "netherite": {"durability": 2031, "efficiency": 9.0},
+              "golden": {"durability": 32, "efficiency": 12.0}
+            },
+            "enchantments": ["efficiency", "unbreaking", "mending", "fortune", "silk_touch"]
+          },
+          "hoe": {
+            "name": "Мотыга",
+            "function": "обработка_земли",
+            "materials": {
+              "wooden": {"durability": 59, "efficiency": 1.0},
+              "stone": {"durability": 131, "efficiency": 2.0},
+              "iron": {"durability": 250, "efficiency": 3.0},
+              "diamond": {"durability": 1561, "efficiency": 4.0},
+              "netherite": {"durability": 2031, "efficiency": 4.0},
+              "golden": {"durability": 32, "efficiency": 1.0}
+            },
+            "enchantments": ["efficiency", "unbreaking", "mending", "fortune"]
+          }
+        }
+      },
+      "weapons": {
+        "description": "Оружие для боя и защиты",
+        "items": {
+          "sword": {
+            "name": "Меч",
+            "function": "ближний_бой",
+            "materials": {
+              "wooden": {"durability": 59, "damage": 4.0, "attack_speed": 1.6},
+              "stone": {"durability": 131, "damage": 5.0, "attack_speed": 1.6},
+              "iron": {"durability": 250, "damage": 6.0, "attack_speed": 1.6},
+              "diamond": {"durability": 1561, "damage": 7.0, "attack_speed": 1.6},
+              "netherite": {"durability": 2031, "damage": 8.0, "attack_speed": 1.6},
+              "golden": {"durability": 32, "damage": 4.0, "attack_speed": 1.6}
+            },
+            "enchantments": ["sharpness", "smite", "bane_of_arthropods", "knockback", "fire_aspect", "looting", "unbreaking", "mending"]
+          },
+          "bow": {
+            "name": "Лук",
+            "function": "дальний_бой",
+            "durability": 384,
+            "damage": "1-10 (зависит_от_натяжения)",
+            "ammunition": "arrows",
+            "enchantments": ["power", "punch", "flame", "infinity", "unbreaking", "mending"]
+          },
+          "shield": {
+            "name": "Щит",
+            "function": "защита",
+            "durability": 336,
+            "damage_reduction": "100% (при_правильном_блоке)",
+            "enchantments": ["unbreaking", "mending"]
+          }
+        }
+      },
+      "armor": {
+        "description": "Броня для защиты игрока",
+        "sets": {
+          "leather": {
+            "material": "кожа",
+            "armor_points": {"helmet": 1, "chestplate": 3, "leggings": 2, "boots": 1},
+            "durability": {"helmet": 55, "chestplate": 80, "leggings": 75, "boots": 65},
+            "toughness": 0,
+            "knockback_resistance": 0
+          },
+          "chainmail": {
+            "material": "кольчуга",
+            "armor_points": {"helmet": 2, "chestplate": 5, "leggings": 4, "boots": 1},
+            "durability": {"helmet": 165, "chestplate": 240, "leggings": 225, "boots": 195},
+            "toughness": 0,
+            "knockback_resistance": 0
+          },
+          "iron": {
+            "material": "железо",
+            "armor_points": {"helmet": 2, "chestplate": 6, "leggings": 5, "boots": 2},
+            "durability": {"helmet": 165, "chestplate": 240, "leggings": 225, "boots": 195},
+            "toughness": 0,
+            "knockback_resistance": 0
+          },
+          "golden": {
+            "material": "золото", 
+            "armor_points": {"helmet": 2, "chestplate": 5, "leggings": 3, "boots": 1},
+            "durability": {"helmet": 77, "chestplate": 112, "leggings": 105, "boots": 91},
+            "toughness": 0,
+            "knockback_resistance": 0
+          },
+          "diamond": {
+            "material": "алмаз",
+            "armor_points": {"helmet": 3, "chestplate": 8, "leggings": 6, "boots": 3},
+            "durability": {"helmet": 363, "chestplate": 528, "leggings": 495, "boots": 429},
+            "toughness": 2,
+            "knockback_resistance": 0
+          },
+          "netherite": {
+            "material": "незерит",
+            "armor_points": {"helmet": 3, "chestplate": 8, "leggings": 6, "boots": 3},
+            "durability": {"helmet": 407, "chestplate": 592, "leggings": 555, "boots": 481},
+            "toughness": 3,
+            "knockback_resistance": 0.1
+          }
+        },
+        "special_armor": {
+          "turtle_shell": {
+            "name": "Панцирь черепахи",
+            "type": "helmet",
+            "armor_points": 2,
+            "durability": 276,
+            "special_effect": "water_breathing"
+          }
+        }
+      },
+      "utility_items": {
+        "description": "Полезные предметы и инструменты",
+        "items": {
+          "fishing_rod": {
+            "name": "Удочка",
+            "durability": 64,
+            "function": "рыбалка",
+            "enchantments": ["luck_of_the_sea", "lure", "unbreaking", "mending"]
+          },
+          "flint_and_steel": {
+            "name": "Огниво",
+            "durability": 64,
+            "function": "поджигание",
+            "enchantments": ["unbreaking", "mending"]
+          },
+          "shears": {
+            "name": "Ножницы",
+            "durability": 239,
+            "function": "стрижка_и_сбор",
+            "enchantments": ["efficiency", "unbreaking", "mending"]
+          },
+          "carrot_on_stick": {
+            "name": "Удочка с морковью",
+            "durability": 25,
+            "function": "управление_свиньями",
+            "enchantments": ["unbreaking", "mending"]
+          },
+          "elytra": {
+            "name": "Элитры",
+            "durability": 432,
+            "function": "полет",
+            "slot": "chestplate",
+            "enchantments": ["unbreaking", "mending"]
+          }
+        }
+      }
+    },
+    "durability_mechanics": {
+      "calculation": "каждое_использование_снижает_на_1",
+      "display": {
+        "bar_colors": ["green", "yellow", "orange", "red", "dark_red"],
+        "warning_threshold": "когда_остается_менее_10%"
+      },
+      "repair_methods": ["crafting_table", "anvil", "grindstone", "mending_enchantment"]
+    },
+    "enchantment_system": {
+      "application_methods": ["enchanting_table", "anvil", "found_items"],
+      "max_enchantment_level": 30,
+      "experience_cost": "зависит_от_уровня_и_предмета"
+    }
+  }
+}

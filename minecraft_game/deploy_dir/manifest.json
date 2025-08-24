@@ -1,0 +1,28 @@
+{
+  "name": "minecraft-mobile",
+  "short_name": "Minecraft",
+  "description": "Мобильная версия игры Minecraft для браузера",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#87CEEB",
+  "theme_color": "#4CAF50",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "prefer_related_applications": false
+}
