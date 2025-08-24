@@ -2,7 +2,8 @@ import puppeteer from 'puppeteer';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const url = process.env.URL || 'http://127.0.0.1:5175/?screenshot=1';
+const urlProd = process.env.URL || 'http://127.0.0.1:5175/?screenshot=1';
+const urlDev = 'http://127.0.0.1:5173/?screenshot=1';
 const outDir = path.resolve(process.cwd(), 'screenshots');
 
 async function run() {
@@ -28,17 +29,28 @@ async function run() {
     }
   });
 
-  await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+  let loaded = false;
+  for (const targetUrl of [urlProd, urlDev]) {
+    try {
+      await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+      await page.waitForSelector('#root', { timeout: 15000 });
+      await page.evaluate(() => { document.getElementById('splash')?.remove(); });
+      // Give app time to mount and render
+      await new Promise(r => setTimeout(r, 2000));
+      // Try to detect a canvas
+      await page.waitForSelector('canvas', { timeout: 8000 });
+      loaded = true;
+      break;
+    } catch (e) {
+      // Try next targetUrl
+    }
+  }
 
-  // Wait for React to mount something under #root
-  await page.waitForSelector('#root', { timeout: 60000 });
-  await page.waitForFunction(() => {
-    const root = document.getElementById('root');
-    return root && root.children && root.children.length > 0;
-  }, { timeout: 60000 });
-
-  // Give it time to render chunks / loading screen
-  await new Promise(r => setTimeout(r, 4000));
+  if (!loaded) {
+    // Still try with whatever is on screen (likely splash/background)
+    await page.evaluate(() => { document.getElementById('splash')?.remove(); });
+    await new Promise(r => setTimeout(r, 1000));
+  }
 
   const ts = new Date().toISOString().replace(/[:.]/g, '-');
   const fullPath = path.join(outDir, `game-${ts}.png`);
