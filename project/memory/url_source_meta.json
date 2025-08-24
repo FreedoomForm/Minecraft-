@@ -1,0 +1,186 @@
+{
+  "_source_id": 25,
+  "sources": {
+    "Современные веб-технологии для создания 3D игр": {
+      "https://vercidium.com/blog/voxel-world-optimisations/": {
+        "id": 1,
+        "publisher": "Vercidium",
+        "url": "https://vercidium.com/blog/voxel-world-optimisations/",
+        "title": "Voxel World Optimisations",
+        "info": "Подробные техники оптимизации воксельных миров: chunk-based рендеринг (32x32x32 блока), упаковка вершин в uint, прогоны для объединения граней, оптимизации CPU/памяти (одномерные массивы, inlining, управление сборщиком мусора). Достигнуто ускорение генерации меша в 5.7x раз."
+      },
+      "https://fenixfox-studios.com/content/webgpu_vs_webgl/": {
+        "id": 2,
+        "publisher": "FenixFox Studios",
+        "url": "https://fenixfox-studios.com/content/webgpu_vs_webgl/",
+        "title": "WebGL vs. WebGPU",
+        "info": "Сравнение WebGL и WebGPU: WebGL - стабильный стандарт с широкой поддержкой, WebGPU - новое поколение API с лучшим контролем GPU, но пока в разработке с проблемами производительности и совместимости. WebGPU может уступать WebGL в сценах с высоким количеством полигонов при использовании Three.js."
+      },
+      "https://tympanus.net/codrops/2025/02/11/building-efficient-three-js-scenes-optimize-performance-while-maintaining-quality/": {
+        "id": 3,
+        "publisher": "Codrops",
+        "url": "https://tympanus.net/codrops/2025/02/11/building-efficient-three-js-scenes-optimize-performance-while-maintaining-quality/",
+        "title": "Building Efficient Three.js Scenes: Optimize Performance While Maintaining Quality",
+        "info": "Комплексные методы оптимизации Three.js: LOD модели, low-poly ассеты, текстурное запекание в Blender, сжатие gltfjsx (до 90% уменьшения), инстансинг, настройка DPR, мониторинг производительности с r3f-perf и stats.js, оптимизация физики и постобработки."
+      },
+      "https://www.numberanalytics.com/blog/ultimate-guide-to-camera-systems-in-game-programming": {
+        "id": 4,
+        "publisher": "Number Analytics",
+        "url": "https://www.numberanalytics.com/blog/ultimate-guide-to-camera-systems-in-game-programming",
+        "title": "Ultimate Guide to Camera Systems in Game Programming",
+        "info": "Полное руководство по системам камер: типы (first-person, third-person, изометрические), техники движения (интерполяция, пружинное движение, скриптовые последовательности), принципы композиции (правило третей, ведущие линии), эффекты камеры (bloom, depth of field, motion blur)."
+      },
+      "https://dev.to/jay_ramoliya_1331a2addb80/roadmap-for-threejs-in-2025-what-to-expect-and-how-to-prepare-di8": {
+        "id": 5,
+        "publisher": "Dev.to",
+        "url": "https://dev.to/jay_ramoliya_1331a2addb80/roadmap-for-threejs-in-2025-what-to-expect-and-how-to-prepare-di8",
+        "title": "Roadmap for Three.js in 2025: What to Expect and How to Prepare",
+        "info": "Планы развития Three.js на 2025: интеграция с WebGPU, глобальное освещение в реальном времени, поддержка многопоточности с Web Workers/WebAssembly, улучшенная AR/VR поддержка с WebXR, AI для процедурной генерации контента, лучшая интеграция с WebAssembly для мультиплеера."
+      }
+    },
+    "Архитектура блочного мира Майнкрафте": {
+      "https://www.alanzucconi.com/2022/06/05/minecraft-world-generation/": {
+        "id": 6,
+        "publisher": "Alan Zucconi",
+        "url": "https://www.alanzucconi.com/2022/06/05/minecraft-world-generation/",
+        "title": "The World Generation of Minecraft",
+        "info": "Детальный технический анализ алгоритмов генерации мира Minecraft, включая процедурную генерацию, систему биомов, использование шума Перлина, этапы генерации мира от карты биомов до заполнения особенностями"
+      },
+      "https://minecraft.wiki/w/World_generation": {
+        "id": 7,
+        "publisher": "Minecraft Wiki",
+        "url": "https://minecraft.wiki/w/World_generation",
+        "title": "World generation - Official Documentation",
+        "info": "Официальная техническая документация по генерации мира в Minecraft, охватывающая процедурную генерацию, 12-этапный процесс генерации чанков, параметры биомов, 3D-шум, сплайны, пещеры от шума, водоносные горизонты и системы структур"
+      },
+      "https://minecraft.fandom.com/wiki/Chunk": {
+        "id": 8,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/wiki/Chunk",
+        "title": "Chunk - Technical Documentation",
+        "info": "Подробная техническая документация о системе чанков: размеры 16x16 блоков, высота 384 блока для Overworld, система загрузки с уровнями тикетов (22-44), типы загрузки (Entity Ticking, Block Ticking, Border), слайм-чанки"
+      },
+      "https://minecraft.fandom.com/wiki/Noise_generator": {
+        "id": 9,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/wiki/Noise_generator",
+        "title": "Noise generator - Technical Specifications",
+        "info": "Техническая информация о генераторах шума в Minecraft: использование шума Перлина, параметры (октавы, частота, фактор, смещение), таблицы генераторов шума для террейна (Low/High/Selector/Depth noise), декоративных элементов и удаленных генераторов"
+      },
+      "https://minecraft.wiki/w/Jigsaw_structure": {
+        "id": 10,
+        "publisher": "Minecraft Wiki",
+        "url": "https://minecraft.wiki/w/Jigsaw_structure",
+        "title": "Jigsaw structure - System Architecture",
+        "info": "Документация по системе Jigsaw структур: процедурная генерация сложных структур (деревни, бастионы, древние города) через пошаговый процесс с блоками-головоломками, пулами шаблонов, параметрами глубины и расстояния, адаптацией к ландшафту"
+      },
+      "https://gamedev.stackexchange.com/questions/12938/how-can-i-optimise-a-minecraft-esque-voxel-world": {
+        "id": 11,
+        "publisher": "GameDev StackExchange",
+        "url": "https://gamedev.stackexchange.com/questions/12938/how-can-i-optimise-a-minecraft-esque-voxel-world",
+        "title": "How can I optimise a Minecraft-esque voxel world?",
+        "info": "Технические методы оптимизации рендеринга воксельных миров: генерация mesh, culling техники, оптимизация GPU, чанковый подход, отсечение окклюзии, многопоточность и кэширование"
+      },
+      "https://minecraft.wiki/w/NBT_format": {
+        "id": 12,
+        "publisher": "Minecraft Wiki",
+        "url": "https://minecraft.wiki/w/NBT_format",
+        "title": "NBT format - Complete Technical Specification",
+        "info": "Полная техническая документация NBT формата Minecraft: древовидная структура данных, 13 типов тегов, SNBT строковое представление, GZip/zlib сжатие, big-endian/little-endian эндианность, сериализация блоков и сущностей"
+      }
+    },
+    "Игровые механики Minecraft": {
+      "https://ru.minecraft.wiki/w/Игровой_процесс": {
+        "id": 13,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Игровой_процесс",
+        "title": "Игровой процесс",
+        "info": "Базовые принципы игры, режимы, система блоков, движение персонажа, физика"
+      },
+      "https://ru.minecraft.wiki/w/Такт": {
+        "id": 14,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Такт",
+        "title": "Система тактов",
+        "info": "Основная временная единица игры (20 тактов в секунду), такты блоков и красного камня"
+      },
+      "https://minecraft.fandom.com/ru/wiki/Добывание": {
+        "id": 15,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/ru/wiki/Добывание",
+        "title": "Механика добывания блоков",
+        "info": "Детальная информация о времени разрушения блоков, эффективности инструментов, формулы расчета"
+      },
+      "https://minecraft.fandom.com/ru/wiki/Голод": {
+        "id": 16,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/ru/wiki/Голод",
+        "title": "Система голода и насыщения",
+        "info": "Полная механика голода: 20 очков, скрытое насыщение, восстановление здоровья, влияние действий"
+      },
+      "https://www.minecraft.net/ru-ru/article/health-minecraft": {
+        "id": 17,
+        "publisher": "Minecraft.net",
+        "url": "https://www.minecraft.net/ru-ru/article/health-minecraft",
+        "title": "Система здоровья",
+        "info": "Официальное описание системы здоровья: 20 HP, восстановление, урон, броня"
+      },
+      "https://minecraft.fandom.com/ru/wiki/Плавание": {
+        "id": 18,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/ru/wiki/Плавание",
+        "title": "Механика плавания",
+        "info": "Скорости плавания в разных условиях, быстрое плавание, взаимодействие с водой"
+      },
+      "https://ru.minecraft.wiki/w/Цикл_дня_и_ночи": {
+        "id": 19,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Цикл_дня_и_ночи",
+        "title": "Цикл дня и ночи",
+        "info": "20-минутный цикл, фазы дня, уровни освещения, влияние на мобов и игровой процесс"
+      },
+      "https://forum.mcmodding.ru/resources/formula-dlja-rascheta-vremeni-dobychi-bloka.176/": {
+        "id": 20,
+        "publisher": "MC Modding Forum",
+        "url": "https://forum.mcmodding.ru/resources/formula-dlja-rascheta-vremeni-dobychi-bloka.176/",
+        "title": "Формула расчета времени добычи блоков",
+        "info": "Математическая формула: Время = (Прочность × 1.5) / Эффективность инструмента"
+      },
+      "https://ru.minecraft.wiki/w/Крафт": {
+        "id": 21,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Крафт",
+        "title": "Механика крафта",
+        "info": "Система крафта: сетки 2x2 и 3x3, правила размещения ингредиентов, форменные и бесформенные рецепты"
+      },
+      "https://ru.minecraft.wiki/w/Верстак": {
+        "id": 22,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Верстак",
+        "title": "Верстак",
+        "info": "Верстак 3x3: основной инструмент для сложного крафта, создание из 4 досок, особенности использования"
+      },
+      "https://ru.minecraft.wiki/w/Рецепт": {
+        "id": 23,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Рецепт",
+        "title": "Система рецептов",
+        "info": "Система рецептов и книга рецептов: JSON-формат, типы рецептов, способы получения"
+      },
+      "https://minecraft.fandom.com/ru/wiki/Инвентарь": {
+        "id": 24,
+        "publisher": "Minecraft Wiki Fandom",
+        "url": "https://minecraft.fandom.com/ru/wiki/Инвентарь",
+        "title": "Система инвентаря",
+        "info": "Система инвентаря: 36 слотов (27+9), хотбар, слоты брони, левая рука, контроль управления"
+      },
+      "https://ru.minecraft.wiki/w/Руководство:Редстоуновые_схемы": {
+        "id": 25,
+        "publisher": "Русскоязычная Minecraft Wiki",
+        "url": "https://ru.minecraft.wiki/w/Руководство:Редстоуновые_схемы",
+        "title": "Основы редстоуна",
+        "info": "Комплексное руководство по редстоуну: сигналы, логические элементы, таймеры, триггеры, основные компоненты"
+      }
+    }
+  }
+}

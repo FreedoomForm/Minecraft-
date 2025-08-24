@@ -1,0 +1,259 @@
+{
+  "recipe_catalog": {
+    "version": "1.21+",
+    "description": "Каталог всех рецептов крафтинга, плавки и варки в Minecraft",
+    "recipe_format": {
+      "json_structure": "data/(namespace)/recipes/",
+      "root_fields": ["type", "group", "pattern", "key", "result"],
+      "version_history": {
+        "1.12": "введена_система_рецептов",
+        "1.13": "добавлены_пользовательские_рецепты",
+        "1.14": "добавлены_рецепты_костра"
+      }
+    },
+    "crafting_recipes": {
+      "basic_items": {
+        "crafting_table": {
+          "type": "shaped",
+          "pattern": ["##", "##"],
+          "key": {"#": "planks"},
+          "result": {"item": "crafting_table", "count": 1},
+          "group": "crafting_table"
+        },
+        "sticks": {
+          "type": "shaped",
+          "pattern": ["#", "#"],
+          "key": {"#": "planks"},
+          "result": {"item": "stick", "count": 4},
+          "group": "sticks"
+        },
+        "wooden_planks": {
+          "type": "shapeless",
+          "ingredients": ["wood_log"],
+          "result": {"item": "oak_planks", "count": 4},
+          "group": "planks"
+        },
+        "torch": {
+          "type": "shaped",
+          "pattern": ["C", "S"],
+          "key": {"C": "coal", "S": "stick"},
+          "result": {"item": "torch", "count": 4},
+          "group": "torch"
+        }
+      },
+      "tools": {
+        "wooden_pickaxe": {
+          "type": "shaped",
+          "pattern": ["###", " S ", " S "],
+          "key": {"#": "planks", "S": "stick"},
+          "result": {"item": "wooden_pickaxe", "count": 1},
+          "group": "wooden_pickaxe"
+        },
+        "stone_pickaxe": {
+          "type": "shaped", 
+          "pattern": ["###", " S ", " S "],
+          "key": {"#": "cobblestone", "S": "stick"},
+          "result": {"item": "stone_pickaxe", "count": 1},
+          "group": "stone_pickaxe"
+        },
+        "iron_pickaxe": {
+          "type": "shaped",
+          "pattern": ["###", " S ", " S "],
+          "key": {"#": "iron_ingot", "S": "stick"},
+          "result": {"item": "iron_pickaxe", "count": 1},
+          "group": "iron_pickaxe"
+        },
+        "wooden_axe": {
+          "type": "shaped",
+          "pattern": ["## ", "#S ", " S "],
+          "key": {"#": "planks", "S": "stick"},
+          "result": {"item": "wooden_axe", "count": 1},
+          "group": "wooden_axe"
+        },
+        "wooden_shovel": {
+          "type": "shaped",
+          "pattern": ["#", "S", "S"],
+          "key": {"#": "planks", "S": "stick"},
+          "result": {"item": "wooden_shovel", "count": 1},
+          "group": "wooden_shovel"
+        }
+      },
+      "weapons": {
+        "wooden_sword": {
+          "type": "shaped",
+          "pattern": ["#", "#", "S"],
+          "key": {"#": "planks", "S": "stick"},
+          "result": {"item": "wooden_sword", "count": 1},
+          "group": "wooden_sword"
+        },
+        "bow": {
+          "type": "shaped",
+          "pattern": [" #S", "# S", " #S"],
+          "key": {"#": "stick", "S": "string"},
+          "result": {"item": "bow", "count": 1},
+          "group": "bow"
+        }
+      },
+      "functional_blocks": {
+        "furnace": {
+          "type": "shaped",
+          "pattern": ["###", "# #", "###"],
+          "key": {"#": "cobblestone"},
+          "result": {"item": "furnace", "count": 1},
+          "group": "furnace"
+        },
+        "chest": {
+          "type": "shaped",
+          "pattern": ["###", "# #", "###"],
+          "key": {"#": "planks"},
+          "result": {"item": "chest", "count": 1},
+          "group": "chest"
+        }
+      }
+    },
+    "smelting_recipes": {
+      "ores": {
+        "iron_ingot": {
+          "type": "smelting",
+          "ingredient": "raw_iron",
+          "result": {"item": "iron_ingot", "count": 1},
+          "experience": 0.7,
+          "cookingtime": 200
+        },
+        "gold_ingot": {
+          "type": "smelting",
+          "ingredient": "raw_gold",
+          "result": {"item": "gold_ingot", "count": 1},
+          "experience": 1.0,
+          "cookingtime": 200
+        },
+        "copper_ingot": {
+          "type": "smelting",
+          "ingredient": "raw_copper",
+          "result": {"item": "copper_ingot", "count": 1},
+          "experience": 0.7,
+          "cookingtime": 200
+        }
+      },
+      "food": {
+        "cooked_beef": {
+          "type": "smelting",
+          "ingredient": "raw_beef",
+          "result": {"item": "cooked_beef", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 200
+        },
+        "cooked_porkchop": {
+          "type": "smelting",
+          "ingredient": "raw_porkchop",
+          "result": {"item": "cooked_porkchop", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 200
+        },
+        "bread": {
+          "type": "smelting",
+          "ingredient": "wheat",
+          "result": {"item": "bread", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 200
+        }
+      },
+      "materials": {
+        "glass": {
+          "type": "smelting",
+          "ingredient": "sand",
+          "result": {"item": "glass", "count": 1},
+          "experience": 0.1,
+          "cookingtime": 200
+        },
+        "stone": {
+          "type": "smelting",
+          "ingredient": "cobblestone",
+          "result": {"item": "stone", "count": 1},
+          "experience": 0.1,
+          "cookingtime": 200
+        },
+        "charcoal": {
+          "type": "smelting",
+          "ingredient": "wood_log",
+          "result": {"item": "charcoal", "count": 1},
+          "experience": 0.15,
+          "cookingtime": 200
+        }
+      }
+    },
+    "blasting_recipes": {
+      "description": "Рецепты для доменной печи (в 2 раза быстрее обычной печи)",
+      "ores": {
+        "iron_ingot_blast": {
+          "type": "blasting",
+          "ingredient": "raw_iron",
+          "result": {"item": "iron_ingot", "count": 1},
+          "experience": 0.7,
+          "cookingtime": 100
+        },
+        "gold_ingot_blast": {
+          "type": "blasting",
+          "ingredient": "raw_gold",
+          "result": {"item": "gold_ingot", "count": 1},
+          "experience": 1.0,
+          "cookingtime": 100
+        }
+      }
+    },
+    "smoking_recipes": {
+      "description": "Рецепты для коптильни (в 2 раза быстрее обычной печи)",
+      "food": {
+        "cooked_beef_smoke": {
+          "type": "smoking",
+          "ingredient": "raw_beef",
+          "result": {"item": "cooked_beef", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 100
+        },
+        "cooked_chicken_smoke": {
+          "type": "smoking", 
+          "ingredient": "raw_chicken",
+          "result": {"item": "cooked_chicken", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 100
+        }
+      }
+    },
+    "campfire_recipes": {
+      "description": "Рецепты для костра",
+      "food": {
+        "cooked_beef_campfire": {
+          "type": "campfire_cooking",
+          "ingredient": "raw_beef",
+          "result": {"item": "cooked_beef", "count": 1},
+          "experience": 0.35,
+          "cookingtime": 600
+        }
+      }
+    },
+    "fuel_data": {
+      "description": "Время горения различных материалов в печи",
+      "fuels": {
+        "coal": {"burn_time": 1600, "items_cooked": 8},
+        "charcoal": {"burn_time": 1600, "items_cooked": 8},
+        "wood_log": {"burn_time": 300, "items_cooked": 1.5},
+        "planks": {"burn_time": 300, "items_cooked": 1.5},
+        "stick": {"burn_time": 100, "items_cooked": 0.5},
+        "lava_bucket": {"burn_time": 20000, "items_cooked": 100},
+        "blaze_rod": {"burn_time": 2400, "items_cooked": 12}
+      }
+    },
+    "special_mechanics": {
+      "recipe_book": {
+        "unlock_conditions": ["auto_on_use", "command_unlock", "achievement_reward"],
+        "categories": ["all", "construction", "equipment", "items", "nature"],
+        "features": ["search", "filter", "favorites"]
+      },
+      "recipe_advancement": {
+        "description": "Система прогресса в изучении рецептов",
+        "unlock_methods": ["crafting", "inventory_has_items", "enter_water", "commands"]
+      }
+    }
+  }
+}
