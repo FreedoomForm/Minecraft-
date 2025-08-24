@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minecraft Mobile - Продвинутая версия</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4a9c4a, #2d5a2d);
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 50%, #8B4513 100%);
+            transition: background 2s ease-in-out;
+        }
+
+        .world {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+            perspective: 1000px;
+        }
+
+        .world-3d {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) rotateX(60deg);
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .player {
+            position: absolute;
+            bottom: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 80px;
+            background: linear-gradient(135deg, #0066cc, #004499);
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .player::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #ffdbac, #f4a460);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .player::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        .blocks {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: repeat(15, 40px);
+            grid-template-rows: repeat(6, 40px);
+            gap: 0;
+            transform-style: preserve-3d;
+        }
+
+        .block {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #654321;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .block:hover {
+            transform: scale(1.1) translateZ(10px);
+            z-index: 10;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .block.grass { 
+            background: linear-gradient(135deg, #4a9c4a, #3d8b3d);
+            border-color: #2d5a2d;
+        }
+        .block.dirt { 
+            background: linear-gradient(135deg, #8b4513, #654321);
+            border-color: #4a2f1a;
+        }
+        .block.stone { 
+            background: linear-gradient(135deg, #808080, #696969);
+            border-color: #555;
+        }
+        .block.wood { 
+            background: linear-gradient(135deg, #8B4513, #654321);
+            border-color: #4a2f1a;
+        }
+        .block.leaves { 
+            background: linear-gradient(135deg, #228b22, #006400);
+            border-color: #004d00;
+        }
+        .block.water { 
+            background: linear-gradient(135deg, #1e90ff, #4169e1);
+            border-color: #0000cd;
+            animation: waterFlow 3s ease-in-out infinite;
+        }
+        .block.sand { 
+            background: linear-gradient(135deg, #f4e4bc, #deb887);
+            border-color: #d2b48c;
+        }
+        .block.coal { 
+            background: linear-gradient(135deg, #2f2f2f, #1a1a1a);
+            border-color: #000;
+        }
+        .block.iron { 
+            background: linear-gradient(135deg, #cd853f, #b8860b);
+            border-color: #8b6914;
+        }
+
+        @keyframes waterFlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .control-btn:active {
+            transform: scale(0.9);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .control-btn.jump { border-color: #4CAF50; }
+        .control-btn.crouch { border-color: #FF9800; }
+        .control-btn.action { border-color: #F44336; }
+
+        .joystick {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 140px;
+            height: 140px;
+            border: 4px solid #333;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            position: relative;
+            z-index: 100;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .joystick-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 100;
+        }
+
+        .hud-item {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .inventory {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: grid;
+            grid-template-columns: repeat(9, 45px);
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .inventory-slot {
+            width: 45px;
+            height: 45px;
+            border: 3px solid #333;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .inventory-slot:hover {
+            transform: scale(1.1);
+            border-color: #4CAF50;
+        }
+
+        .inventory-slot.selected {
+            border-color: #ffff00;
+            background: linear-gradient(135deg, rgba(255, 255, 0, 0.3), rgba(255, 255, 0, 0.1));
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+        }
+
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .crosshair::before,
+        .crosshair::after {
+            content: '';
+            position: absolute;
+            background: white;
+        }
+
+        .crosshair::before {
+            top: 50%;
+            left: -8px;
+            right: -8px;
+            height: 3px;
+            transform: translateY(-50%);
+        }
+
+        .crosshair::after {
+            left: 50%;
+            top: -8px;
+            bottom: -8px;
+            width: 3px;
+            transform: translateX(-50%);
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 20px;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid #4CAF50;
+        }
+
+        .message.show {
+            display: block;
+            animation: messageShow 0.3s ease-out;
+        }
+
+        @keyframes messageShow {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: particleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-20px) scale(1);
+            }
+        }
+
+        .weather {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, transparent, #87CEEB);
+            animation: rainFall 1s linear infinite;
+        }
+
+        @keyframes rainFall {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(100vh); }
+        }
+
+        .crafting {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            display: none;
+            z-index: 100;
+        }
+
+        .crafting.show {
+            display: block;
+        }
+
+        .crafting-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 40px);
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .crafting-slot {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #666;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .blocks {
+                grid-template-columns: repeat(11, 35px);
+                grid-template-rows: repeat(5, 35px);
+            }
+            
+            .block {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .player {
+                width: 35px;
+                height: 70px;
+            }
+            
+            .control-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .joystick {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .inventory {
+                grid-template-columns: repeat(9, 40px);
+                gap: 6px;
+            }
+            
+            .inventory-slot {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="world">
+            <div class="world-3d">
+                <div class="blocks" id="blocks"></div>
+            </div>
+        </div>
+        
+        <div class="player" id="player"></div>
+        
+        <div class="crosshair"></div>
+        
+        <div class="particles" id="particles"></div>
+        <div class="weather" id="weather"></div>
+        
+        <div class="hud">
+            <div class="hud-item">
+                <div>❤️ Здоровье: <span id="health">20/20</span></div>
+            </div>
+            <div class="hud-item">
+                <div>🍖 Голод: <span id="hunger">20/20</span></div>
+            </div>
+            <div class="hud-item">
+                <div>📍 Позиция: <span id="position">0, 0, 0</span></div>
+            </div>
+            <div class="hud-item">
+                <div>⏰ Время: <span id="time">12:00</span></div>
+            </div>
+            <div class="hud-item">
+                <div>🎯 Режим: <span id="mode">Выживание</span></div>
+            </div>
+        </div>
+        
+        <div class="inventory" id="inventory"></div>
+        
+        <div class="controls">
+            <div class="control-btn jump" id="jump">↑</div>
+            <div class="control-btn crouch" id="crouch">↓</div>
+            <div class="control-btn action" id="action">⚡</div>
+        </div>
+        
+        <div class="joystick" id="joystick">
+            <div class="joystick-handle" id="joystick-handle"></div>
+        </div>
+        
+        <div class="crafting" id="crafting">
+            <h3>⚙️ Крафтинг</h3>
+            <div class="crafting-grid" id="crafting-grid"></div>
+            <div>Результат: <span id="crafting-result">-</span></div>
+            <button id="craft-btn" style="margin-top: 10px; padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Скрафтить</button>
+        </div>
+        
+        <div class="message" id="message">
+            <div>🎮 Minecraft Mobile</div>
+            <div style="margin-top: 15px; font-size: 16px;">
+                Используйте джойстик для движения<br>
+                Нажмите кнопки для действий<br>
+                Кликните по блокам для взаимодействия
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class AdvancedMinecraftGame {
+            constructor() {
+                this.player = {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    health: 20,
+                    hunger: 20,
+                    experience: 0,
+                    gameMode: 'survival'
+                };
+                
+                this.selectedSlot = 0;
+                this.inventory = [
+                    { item: 'dirt', count: 64, icon: '🟧', type: 'block' },
+                    { item: 'stone', count: 64, icon: '⚫', type: 'block' },
+                    { item: 'wood', count: 64, icon: '🪵', type: 'block' },
+                    { item: 'pickaxe', count: 1, icon: '⛏️', type: 'tool', durability: 100 },
+                    { item: 'axe', count: 1, icon: '🪓', type: 'tool', durability: 100 },
+                    { item: 'shovel', count: 1, icon: '🥄', type: 'tool', durability: 100 },
+                    { item: 'sword', count: 1, icon: '⚔️', type: 'weapon', durability: 100 },
+                    { item: 'torch', count: 16, icon: '🕯️', type: 'light' },
+                    { item: 'chest', count: 1, icon: '📦', type: 'container' }
+                ];
+                
+                this.gameTime = 6000;
+                this.isRunning = true;
+                this.weather = 'clear';
+                this.particles = [];
+                this.rainDrops = [];
+                
+                this.init();
+            }
+            
+            init() {
+                this.createBlocks();
+                this.createInventory();
+                this.setupControls();
+                this.setupCrafting();
+                this.createParticles();
+                this.gameLoop();
+                this.showMessage('Добро пожаловать в Minecraft Mobile!', 3000);
+            }
+            
+            createBlocks() {
+                const blocksContainer = document.getElementById('blocks');
+                const blockTypes = ['grass', 'dirt', 'stone'];
+                
+                for (let row = 0; row < 6; row++) {
+                    for (let col = 0; col < 15; col++) {
+                        const block = document.createElement('div');
+                        block.className = `block ${blockTypes[row] || 'stone'}`;
+                        block.dataset.row = row;
+                        block.dataset.col = col;
+                        
+                        block.addEventListener('click', () => {
+                            this.onBlockClick(row, col);
+                        });
+                        
+                        blocksContainer.appendChild(block);
+                    }
+                }
+                
+                // Добавляем дерево
+                this.addTree(10, 0);
+                
+                // Добавляем водоем
+                this.addWater(-3, 0);
+                
+                // Добавляем руду
+                this.addOre(5, 2, 'coal');
+                this.addOre(8, 3, 'iron');
+            }
+            
+            addTree(x, y) {
+                const blocksContainer = document.getElementById('blocks');
+                const treeBlocks = [
+                    { row: 1, col: x, type: 'wood' },
+                    { row: 2, col: x, type: 'wood' },
+                    { row: 3, col: x, type: 'wood' },
+                    { row: 2, col: x-1, type: 'leaves' },
+                    { row: 2, col: x+1, type: 'leaves' },
+                    { row: 3, col: x-1, type: 'leaves' },
+                    { row: 3, col: x+1, type: 'leaves' },
+                    { row: 4, col: x, type: 'leaves' }
+                ];
+                
+                treeBlocks.forEach(({ row, col, type }) => {
+                    if (row >= 0 && row < 6 && col >= 0 && col < 15) {
+                        const block = blocksContainer.children[row * 15 + col];
+                        if (block) {
+                            block.className = `block ${type}`;
+                        }
+                    }
+                });
+            }
+            
+            addWater(x, y) {
+                const blocksContainer = document.getElementById('blocks');
+                for (let dx = 0; dx < 3; dx++) {
+                    for (let dy = 0; dy < 2; dy++) {
+                        const block = blocksContainer.children[(y + dy) * 15 + (x + dx)];
+                        if (block) {
+                            block.className = 'block water';
+                        }
+                    }
+                }
+            }
+            
+            addOre(x, y, type) {
+                const blocksContainer = document.getElementById('blocks');
+                const block = blocksContainer.children[y * 15 + x];
+                if (block) {
+                    block.className = `block ${type}`;
+                }
+            }
+            
+            createInventory() {
+                const inventoryContainer = document.getElementById('inventory');
+                
+                this.inventory.forEach((item, index) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'inventory-slot';
+                    slot.innerHTML = item.icon;
+                    slot.dataset.index = index;
+                    
+                    if (index === this.selectedSlot) {
+                        slot.classList.add('selected');
+                    }
+                    
+                    slot.addEventListener('click', () => {
+                        this.selectSlot(index);
+                    });
+                    
+                    inventoryContainer.appendChild(slot);
+                });
+            }
+            
+            setupCrafting() {
+                const craftingGrid = document.getElementById('crafting-grid');
+                for (let i = 0; i < 9; i++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'crafting-slot';
+                    slot.dataset.index = i;
+                    slot.addEventListener('click', () => this.onCraftingSlotClick(i));
+                    craftingGrid.appendChild(slot);
+                }
+                
+                document.getElementById('craft-btn').addEventListener('click', () => {
+                    this.craftItem();
+                });
+            }
+            
+            onCraftingSlotClick(index) {
+                const selectedItem = this.inventory[this.selectedSlot];
+                if (selectedItem && selectedItem.count > 0) {
+                    const craftingSlot = document.querySelector(`[data-index="${index}"]`);
+                    craftingSlot.innerHTML = selectedItem.icon;
+                    craftingSlot.dataset.item = selectedItem.item;
+                    
+                    // Уменьшаем количество в инвентаре
+                    selectedItem.count--;
+                    this.updateInventoryDisplay();
+                    
+                    this.checkCraftingRecipe();
+                }
+            }
+            
+            checkCraftingRecipe() {
+                const craftingSlots = document.querySelectorAll('.crafting-slot');
+                const items = Array.from(craftingSlots).map(slot => slot.dataset.item || '');
+                
+                // Простые рецепты
+                let result = null;
+                
+                // Доски из дерева
+                if (items[0] === 'wood' && items[1] === '' && items[2] === '' &&
+                    items[3] === '' && items[4] === '' && items[5] === '' &&
+                    items[6] === '' && items[7] === '' && items[8] === '') {
+                    result = { item: 'planks', icon: '🟦', count: 4 };
+                }
+                
+                // Палки из досок
+                if (items[0] === 'planks' && items[1] === 'planks' && items[2] === '' &&
+                    items[3] === '' && items[4] === '' && items[5] === '' &&
+                    items[6] === '' && items[7] === '' && items[8] === '') {
+                    result = { item: 'sticks', icon: '🌳', count: 4 };
+                }
+                
+                // Верстак
+                if (items[0] === 'planks' && items[1] === 'planks' && items[2] === '' &&
+                    items[3] === 'planks' && items[4] === 'planks' && items[5] === '' &&
+                    items[6] === '' && items[7] === '' && items[8] === '') {
+                    result = { item: 'crafting_table', icon: '🪵', count: 1 };
+                }
+                
+                document.getElementById('crafting-result').textContent = result ? `${result.icon} ${result.item}` : '-';
+                document.getElementById('craft-btn').disabled = !result;
+            }
+            
+            craftItem() {
+                const result = document.getElementById('crafting-result').textContent;
+                if (result !== '-') {
+                    this.showMessage(`Скрафчено: ${result}`, 2000);
+                    
+                    // Очищаем сетку крафта
+                    document.querySelectorAll('.crafting-slot').forEach(slot => {
+                        slot.innerHTML = '';
+                        slot.dataset.item = '';
+                    });
+                    
+                    document.getElementById('crafting-result').textContent = '-';
+                    document.getElementById('craft-btn').disabled = true;
+                }
+            }
+            
+            selectSlot(index) {
+                document.querySelectorAll('.inventory-slot').forEach(slot => {
+                    slot.classList.remove('selected');
+                });
+                
+                document.querySelector(`[data-index="${index}"]`).classList.add('selected');
+                this.selectedSlot = index;
+                
+                const item = this.inventory[index];
+                this.showMessage(`Выбран: ${item.item || 'пусто'}`, 1000);
+            }
+            
+            setupControls() {
+                // Джойстик
+                const joystick = document.getElementById('joystick');
+                const handle = document.getElementById('joystick-handle');
+                let isDragging = false;
+                let startPos = { x: 0, y: 0 };
+                
+                joystick.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    isDragging = true;
+                    const rect = joystick.getBoundingClientRect();
+                    startPos = {
+                        x: e.touches[0].clientX - rect.left - rect.width / 2,
+                        y: e.touches[0].clientY - rect.top - rect.height / 2
+                    };
+                });
+                
+                joystick.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    
+                    const rect = joystick.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    let deltaX = touch.clientX - rect.left - rect.width / 2;
+                    let deltaY = touch.clientY - rect.top - rect.height / 2;
+                    
+                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    const maxDistance = rect.width / 2 - 25;
+                    
+                    if (distance > maxDistance) {
+                        const angle = Math.atan2(deltaY, deltaX);
+                        deltaX = Math.cos(angle) * maxDistance;
+                        deltaY = Math.sin(angle) * maxDistance;
+                    }
+                    
+                    handle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                    
+                    // Движение игрока
+                    this.movePlayer(deltaX / maxDistance, deltaY / maxDistance);
+                });
+                
+                joystick.addEventListener('touchend', () => {
+                    isDragging = false;
+                    handle.style.transform = 'translate(-50%, -50%)';
+                    this.movePlayer(0, 0);
+                });
+                
+                // Кнопки
+                document.getElementById('jump').addEventListener('click', () => {
+                    this.jump();
+                });
+                
+                document.getElementById('crouch').addEventListener('click', () => {
+                    this.crouch();
+                });
+                
+                document.getElementById('action').addEventListener('click', () => {
+                    this.action();
+                });
+                
+                // Предотвращение скроллинга
+                document.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                }, { passive: false });
+                
+                // Клавиатура
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key.toLowerCase()) {
+                        case 'w': this.movePlayer(0, -1); break;
+                        case 's': this.movePlayer(0, 1); break;
+                        case 'a': this.movePlayer(-1, 0); break;
+                        case 'd': this.movePlayer(1, 0); break;
+                        case ' ': this.jump(); break;
+                        case 'shift': this.crouch(); break;
+                        case 'e': this.toggleCrafting(); break;
+                    }
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    if (['w', 's', 'a', 'd'].includes(e.key.toLowerCase())) {
+                        this.movePlayer(0, 0);
+                    }
+                });
+            }
+            
+            toggleCrafting() {
+                const crafting = document.getElementById('crafting');
+                crafting.classList.toggle('show');
+            }
+            
+            movePlayer(x, z) {
+                this.player.x += x * 0.1;
+                this.player.z += z * 0.1;
+                
+                // Ограничиваем движение
+                this.player.x = Math.max(-7, Math.min(7, this.player.x));
+                this.player.z = Math.max(-7, Math.min(7, this.player.z));
+                
+                this.updatePlayerPosition();
+            }
+            
+            jump() {
+                this.player.y += 0.5;
+                this.showMessage('Прыжок!', 500);
+                this.createParticle(this.player.x, this.player.y, this.player.z, '#4CAF50');
+            }
+            
+            crouch() {
+                this.player.y = Math.max(0, this.player.y - 0.5);
+                this.showMessage('Присесть!', 500);
+            }
+            
+            action() {
+                const selectedItem = this.inventory[this.selectedSlot];
+                if (selectedItem && selectedItem.item) {
+                    this.showMessage(`Используется: ${selectedItem.item}`, 1000);
+                    
+                    if (selectedItem.type === 'tool' && selectedItem.durability) {
+                        selectedItem.durability -= 10;
+                        if (selectedItem.durability <= 0) {
+                            selectedItem.count = 0;
+                            selectedItem.item = null;
+                            this.showMessage(`${selectedItem.item} сломался!`, 2000);
+                        }
+                        this.updateInventoryDisplay();
+                    }
+                } else {
+                    this.showMessage('Нет выбранного предмета', 1000);
+                }
+            }
+            
+            onBlockClick(row, col) {
+                const blockTypes = ['grass', 'dirt', 'stone'];
+                const currentType = blockTypes[row] || 'stone';
+                
+                const selectedItem = this.inventory[this.selectedSlot];
+                
+                if (selectedItem && selectedItem.type === 'tool') {
+                    this.showMessage(`Блок ${currentType} разрушен!`, 1000);
+                    this.createParticle(col - 7, row, 0, '#FF9800');
+                    
+                    // Добавляем предмет в инвентарь
+                    this.addToInventory(currentType, 1);
+                } else if (selectedItem && selectedItem.type === 'block') {
+                    this.showMessage(`Блок ${selectedItem.item} установлен!`, 1000);
+                    selectedItem.count--;
+                    this.updateInventoryDisplay();
+                } else {
+                    this.showMessage(`Блок: ${currentType} (${row}, ${col})`, 1000);
+                }
+            }
+            
+            addToInventory(item, count) {
+                const existingSlot = this.inventory.find(slot => slot.item === item);
+                if (existingSlot) {
+                    existingSlot.count += count;
+                } else {
+                    const emptySlot = this.inventory.find(slot => !slot.item);
+                    if (emptySlot) {
+                        emptySlot.item = item;
+                        emptySlot.count = count;
+                        emptySlot.icon = this.getItemIcon(item);
+                        emptySlot.type = 'block';
+                    }
+                }
+                this.updateInventoryDisplay();
+            }
+            
+            getItemIcon(item) {
+                const iconMap = {
+                    'grass': '🌿',
+                    'dirt': '🟧',
+                    'stone': '⚫',
+                    'wood': '🪵',
+                    'leaves': '🍃',
+                    'water': '🌊',
+                    'sand': '🟡',
+                    'coal': '⚫',
+                    'iron': '🔘'
+                };
+                return iconMap[item] || '📦';
+            }
+            
+            updateInventoryDisplay() {
+                this.inventory.forEach((item, index) => {
+                    const slot = document.querySelector(`[data-index="${index}"]`);
+                    if (slot) {
+                        slot.innerHTML = item.icon || '';
+                        if (item.count > 1) {
+                            slot.innerHTML += `<div style="position: absolute; bottom: 2px; right: 2px; font-size: 12px; background: #333; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">${item.count}</div>`;
+                        }
+                    }
+                });
+            }
+            
+            createParticles() {
+                setInterval(() => {
+                    if (Math.random() < 0.3) {
+                        const x = (Math.random() - 0.5) * 20;
+                        const y = Math.random() * 10;
+                        this.createParticle(x, y, 0, '#FFFFFF');
+                    }
+                }, 1000);
+            }
+            
+            createParticle(x, y, z, color) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${(x + 7) * 40 + 20}px`;
+                particle.style.bottom = `${y * 40 + 20}px`;
+                particle.style.background = color;
+                
+                document.getElementById('particles').appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 3000);
+            }
+            
+            updatePlayerPosition() {
+                document.getElementById('position').textContent = 
+                    `${this.player.x.toFixed(1)}, ${this.player.y.toFixed(1)}, ${this.player.z.toFixed(1)}`;
+            }
+            
+            showMessage(text, duration) {
+                const message = document.getElementById('message');
+                message.innerHTML = text;
+                message.classList.add('show');
+                
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, duration);
+            }
+            
+            gameLoop() {
+                if (!this.isRunning) return;
+                
+                // Обновляем время
+                this.gameTime = (this.gameTime + 20) % 24000;
+                const hours = Math.floor(this.gameTime / 1000) + 6;
+                const minutes = Math.floor((this.gameTime % 1000) / 1000 * 60);
+                document.getElementById('time').textContent = 
+                    `${(hours % 24).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                
+                // Обновляем фон в зависимости от времени
+                this.updateBackground();
+                
+                // Обновляем погоду
+                this.updateWeather();
+                
+                requestAnimationFrame(() => this.gameLoop());
+            }
+            
+            updateBackground() {
+                const container = document.querySelector('.game-container');
+                const hour = (Math.floor(this.gameTime / 1000) + 6) % 24;
+                
+                let gradient;
+                if (hour >= 6 && hour < 8) {
+                    gradient = 'linear-gradient(to bottom, #ffa500 0%, #87CEEB 30%, #98FB98 60%, #8B4513 100%)'; // Рассвет
+                } else if (hour >= 8 && hour < 18) {
+                    gradient = 'linear-gradient(to bottom, #87CEEB 0%, #98FB98 50%, #8B4513 100%)'; // День
+                } else if (hour >= 18 && hour < 20) {
+                    gradient = 'linear-gradient(to bottom, #ff8c00 0%, #4b0082 30%, #8B4513 100%)'; // Закат
+                } else {
+                    gradient = 'linear-gradient(to bottom, #191970 0%, #000080 30%, #8B4513 100%)'; // Ночь
+                }
+                
+                container.style.background = gradient;
+            }
+            
+            updateWeather() {
+                const hour = (Math.floor(this.gameTime / 1000) + 6) % 24;
+                
+                if (hour >= 22 || hour <= 6) {
+                    if (this.weather !== 'rain' && Math.random() < 0.01) {
+                        this.startRain();
+                    }
+                } else {
+                    if (this.weather === 'rain') {
+                        this.stopRain();
+                    }
+                }
+            }
+            
+            startRain() {
+                this.weather = 'rain';
+                this.createRainDrops();
+                this.showMessage('Начинается дождь...', 2000);
+            }
+            
+            stopRain() {
+                this.weather = 'clear';
+                document.querySelectorAll('.rain-drop').forEach(drop => drop.remove());
+                this.showMessage('Дождь закончился', 2000);
+            }
+            
+            createRainDrops() {
+                if (this.weather !== 'rain') return;
+                
+                for (let i = 0; i < 50; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'rain-drop';
+                    drop.style.left = `${Math.random() * 100}%`;
+                    drop.style.animationDelay = `${Math.random() * 2}s`;
+                    drop.style.animationDuration = `${1 + Math.random()}s`;
+                    
+                    document.getElementById('weather').appendChild(drop);
+                }
+                
+                setTimeout(() => this.createRainDrops(), 2000);
+            }
+        }
+        
+        // Запускаем игру когда страница загрузится
+        window.addEventListener('load', () => {
+            new AdvancedMinecraftGame();
+        });
+    </script>
+</body>
+</html>

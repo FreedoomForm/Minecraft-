@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minecraft Mobile - Простая версия</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4a9c4a, #2d5a2d);
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 50%, #8B4513 100%);
+        }
+
+        .world {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+        }
+
+        .player {
+            position: absolute;
+            bottom: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 80px;
+            background: #0066cc;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .player::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #ffdbac;
+            border-radius: 50%;
+        }
+
+        .blocks {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: repeat(11, 40px);
+            grid-template-rows: repeat(4, 40px);
+            gap: 0;
+        }
+
+        .block {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #654321;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .block:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .block.grass { background: #4a9c4a; }
+        .block.dirt { background: #8b4513; }
+        .block.stone { background: #808080; }
+        .block.wood { background: #8B4513; }
+        .block.leaves { background: #228b22; }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .control-btn:active {
+            transform: scale(0.9);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .joystick {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .joystick-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 16px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .inventory {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: grid;
+            grid-template-columns: repeat(9, 40px);
+            gap: 5px;
+        }
+
+        .inventory-slot {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #333;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .inventory-slot.selected {
+            border-color: #ffff00;
+            background: rgba(255, 255, 0, 0.3);
+        }
+
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .blocks {
+                grid-template-columns: repeat(9, 35px);
+                grid-template-rows: repeat(3, 35px);
+            }
+            
+            .block {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .player {
+                width: 35px;
+                height: 70px;
+            }
+            
+            .control-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .joystick {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="world">
+            <div class="blocks" id="blocks"></div>
+        </div>
+        
+        <div class="player" id="player"></div>
+        
+        <div class="crosshair"></div>
+        
+        <div class="hud">
+            <div>Здоровье: ❤️❤️❤️❤️❤️</div>
+            <div>Голод: 🍖🍖🍖🍖🍖</div>
+            <div>Позиция: <span id="position">0, 0, 0</span></div>
+            <div>Время: <span id="time">12:00</span></div>
+        </div>
+        
+        <div class="inventory" id="inventory"></div>
+        
+        <div class="controls">
+            <div class="control-btn" id="jump">↑</div>
+            <div class="control-btn" id="crouch">↓</div>
+            <div class="control-btn" id="action">⚡</div>
+        </div>
+        
+        <div class="joystick" id="joystick">
+            <div class="joystick-handle" id="joystick-handle"></div>
+        </div>
+        
+        <div class="message" id="message">
+            <div>🎮 Minecraft Mobile</div>
+            <div style="margin-top: 10px; font-size: 14px;">
+                Используйте джойстик для движения<br>
+                Нажмите кнопки для действий
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MinecraftGame {
+            constructor() {
+                this.player = {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                    health: 20,
+                    hunger: 20
+                };
+                
+                this.selectedSlot = 0;
+                this.inventory = [
+                    { item: 'dirt', count: 64, icon: '🟧' },
+                    { item: 'stone', count: 64, icon: '⚫' },
+                    { item: 'wood', count: 64, icon: '🪵' },
+                    { item: 'pickaxe', count: 1, icon: '⛏️' },
+                    { item: 'axe', count: 1, icon: '🪓' },
+                    { item: null, count: 0, icon: '' },
+                    { item: null, count: 0, icon: '' },
+                    { item: null, count: 0, icon: '' },
+                    { item: null, count: 0, icon: '' }
+                ];
+                
+                this.gameTime = 6000;
+                this.isRunning = true;
+                
+                this.init();
+            }
+            
+            init() {
+                this.createBlocks();
+                this.createInventory();
+                this.setupControls();
+                this.gameLoop();
+                this.showMessage('Добро пожаловать в Minecraft Mobile!', 3000);
+            }
+            
+            createBlocks() {
+                const blocksContainer = document.getElementById('blocks');
+                const blockTypes = ['grass', 'dirt', 'stone'];
+                
+                for (let row = 0; row < 4; row++) {
+                    for (let col = 0; col < 11; col++) {
+                        const block = document.createElement('div');
+                        block.className = `block ${blockTypes[row] || 'stone'}`;
+                        block.dataset.row = row;
+                        block.dataset.col = col;
+                        
+                        block.addEventListener('click', () => {
+                            this.onBlockClick(row, col);
+                        });
+                        
+                        blocksContainer.appendChild(block);
+                    }
+                }
+                
+                // Добавляем дерево
+                this.addTree(7, 0);
+            }
+            
+            addTree(x, y) {
+                const blocksContainer = document.getElementById('blocks');
+                const treeBlocks = [
+                    { row: 1, col: x, type: 'wood' },
+                    { row: 2, col: x, type: 'wood' },
+                    { row: 3, col: x, type: 'wood' },
+                    { row: 2, col: x-1, type: 'leaves' },
+                    { row: 2, col: x+1, type: 'leaves' },
+                    { row: 3, col: x-1, type: 'leaves' },
+                    { row: 3, col: x+1, type: 'leaves' }
+                ];
+                
+                treeBlocks.forEach(({ row, col, type }) => {
+                    if (row >= 0 && row < 4 && col >= 0 && col < 11) {
+                        const block = blocksContainer.children[row * 11 + col];
+                        if (block) {
+                            block.className = `block ${type}`;
+                        }
+                    }
+                });
+            }
+            
+            createInventory() {
+                const inventoryContainer = document.getElementById('inventory');
+                
+                this.inventory.forEach((item, index) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'inventory-slot';
+                    slot.innerHTML = item.icon;
+                    slot.dataset.index = index;
+                    
+                    if (index === this.selectedSlot) {
+                        slot.classList.add('selected');
+                    }
+                    
+                    slot.addEventListener('click', () => {
+                        this.selectSlot(index);
+                    });
+                    
+                    inventoryContainer.appendChild(slot);
+                });
+            }
+            
+            selectSlot(index) {
+                document.querySelectorAll('.inventory-slot').forEach(slot => {
+                    slot.classList.remove('selected');
+                });
+                
+                document.querySelector(`[data-index="${index}"]`).classList.add('selected');
+                this.selectedSlot = index;
+                
+                this.showMessage(`Выбран: ${this.inventory[index].item || 'пусто'}`, 1000);
+            }
+            
+            setupControls() {
+                // Джойстик
+                const joystick = document.getElementById('joystick');
+                const handle = document.getElementById('joystick-handle');
+                let isDragging = false;
+                let startPos = { x: 0, y: 0 };
+                
+                joystick.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    isDragging = true;
+                    const rect = joystick.getBoundingClientRect();
+                    startPos = {
+                        x: e.touches[0].clientX - rect.left - rect.width / 2,
+                        y: e.touches[0].clientY - rect.top - rect.height / 2
+                    };
+                });
+                
+                joystick.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    
+                    const rect = joystick.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    let deltaX = touch.clientX - rect.left - rect.width / 2;
+                    let deltaY = touch.clientY - rect.top - rect.height / 2;
+                    
+                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    const maxDistance = rect.width / 2 - 20;
+                    
+                    if (distance > maxDistance) {
+                        const angle = Math.atan2(deltaY, deltaX);
+                        deltaX = Math.cos(angle) * maxDistance;
+                        deltaY = Math.sin(angle) * maxDistance;
+                    }
+                    
+                    handle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                    
+                    // Движение игрока
+                    this.movePlayer(deltaX / maxDistance, deltaY / maxDistance);
+                });
+                
+                joystick.addEventListener('touchend', () => {
+                    isDragging = false;
+                    handle.style.transform = 'translate(-50%, -50%)';
+                    this.movePlayer(0, 0);
+                });
+                
+                // Кнопки
+                document.getElementById('jump').addEventListener('click', () => {
+                    this.jump();
+                });
+                
+                document.getElementById('crouch').addEventListener('click', () => {
+                    this.crouch();
+                });
+                
+                document.getElementById('action').addEventListener('click', () => {
+                    this.action();
+                });
+                
+                // Предотвращение скроллинга
+                document.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                }, { passive: false });
+            }
+            
+            movePlayer(x, z) {
+                this.player.x += x * 0.1;
+                this.player.z += z * 0.1;
+                
+                // Ограничиваем движение
+                this.player.x = Math.max(-5, Math.min(5, this.player.x));
+                this.player.z = Math.max(-5, Math.min(5, this.player.z));
+                
+                this.updatePlayerPosition();
+            }
+            
+            jump() {
+                this.player.y += 0.5;
+                this.showMessage('Прыжок!', 500);
+            }
+            
+            crouch() {
+                this.player.y = Math.max(0, this.player.y - 0.5);
+                this.showMessage('Присесть!', 500);
+            }
+            
+            action() {
+                const selectedItem = this.inventory[this.selectedSlot];
+                if (selectedItem && selectedItem.item) {
+                    this.showMessage(`Используется: ${selectedItem.item}`, 1000);
+                } else {
+                    this.showMessage('Нет выбранного предмета', 1000);
+                }
+            }
+            
+            onBlockClick(row, col) {
+                const blockTypes = ['grass', 'dirt', 'stone'];
+                const currentType = blockTypes[row] || 'stone';
+                
+                this.showMessage(`Блок: ${currentType} (${row}, ${col})`, 1000);
+                
+                // Простая логика разрушения/установки блоков
+                if (this.inventory[this.selectedSlot].item === 'pickaxe') {
+                    this.showMessage('Блок разрушен!', 1000);
+                } else if (this.inventory[this.selectedSlot].item === 'dirt') {
+                    this.showMessage('Блок установлен!', 1000);
+                }
+            }
+            
+            updatePlayerPosition() {
+                document.getElementById('position').textContent = 
+                    `${this.player.x.toFixed(1)}, ${this.player.y.toFixed(1)}, ${this.player.z.toFixed(1)}`;
+            }
+            
+            showMessage(text, duration) {
+                const message = document.getElementById('message');
+                message.innerHTML = text;
+                message.classList.add('show');
+                
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, duration);
+            }
+            
+            gameLoop() {
+                if (!this.isRunning) return;
+                
+                // Обновляем время
+                this.gameTime = (this.gameTime + 20) % 24000;
+                const hours = Math.floor(this.gameTime / 1000) + 6;
+                const minutes = Math.floor((this.gameTime % 1000) / 1000 * 60);
+                document.getElementById('time').textContent = 
+                    `${(hours % 24).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                
+                // Обновляем фон в зависимости от времени
+                this.updateBackground();
+                
+                requestAnimationFrame(() => this.gameLoop());
+            }
+            
+            updateBackground() {
+                const container = document.querySelector('.game-container');
+                const hour = (Math.floor(this.gameTime / 1000) + 6) % 24;
+                
+                let gradient;
+                if (hour >= 6 && hour < 8) {
+                    gradient = 'linear-gradient(135deg, #ffa500, #87CEEB)'; // Рассвет
+                } else if (hour >= 8 && hour < 18) {
+                    gradient = 'linear-gradient(135deg, #87CEEB, #98FB98)'; // День
+                } else if (hour >= 18 && hour < 20) {
+                    gradient = 'linear-gradient(135deg, #ff8c00, #4b0082)'; // Закат
+                } else {
+                    gradient = 'linear-gradient(135deg, #191970, #000080)'; // Ночь
+                }
+                
+                container.style.background = gradient;
+            }
+        }
+        
+        // Запускаем игру когда страница загрузится
+        window.addEventListener('load', () => {
+            new MinecraftGame();
+        });
+    </script>
+</body>
+</html>
