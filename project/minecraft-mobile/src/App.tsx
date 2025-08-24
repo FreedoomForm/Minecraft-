@@ -7,12 +7,17 @@ function App() {
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   useEffect(() => {
-    // Проверка поддержки WebGL
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl) {
-      setIsSupported(false);
-      return;
+    // Режим снятия скриншотов (обходит проверку WebGL для headless)
+    const params = new URLSearchParams(window.location.search);
+    const screenshotMode = params.get('screenshot') === '1';
+    if (!screenshotMode) {
+      // Проверка поддержки WebGL
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        setIsSupported(false);
+        return;
+      }
     }
 
     // Обработка PWA установки
@@ -34,6 +39,14 @@ function App() {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
+  }, []);
+
+  useEffect(() => {
+    // Удаляем сплэш после монтирования приложения
+    const splash = document.getElementById('splash');
+    if (splash && splash.parentElement) {
+      splash.parentElement.removeChild(splash);
+    }
   }, []);
 
   const handleInstallApp = async () => {
